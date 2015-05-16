@@ -1,0 +1,13 @@
+<%
+  not @section_name.empty? and @l_section_name = @section_name or @l_section_name = @name
+
+  output = []
+  output << '[' + @l_section_name + ']'
+  output << 'Identity=' + Array(@identity).join(';')
+  output << 'Action=' + @action
+  not @result_active.empty? and output << 'ResultActive=' + @result_active
+  not @result_inactive.empty? and output << 'ResultInactive=' + @result_inactive
+  not @result_any.empty? and output << 'ResultAny=' + @result_any
+  not @return_value.empty? and output << 'ReturnValue=' + @return_value
+-%>
+<%= output.join("\n") %>
