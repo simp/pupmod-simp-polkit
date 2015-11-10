@@ -1,12 +1,12 @@
 Summary: PolicyKit Puppet Module
 Name: pupmod-polkit
 Version: 4.1.0
-Release: 1
+Release: 2
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires: pupmod-concat >= 4.0.0-0
+Requires: pupmod-simpcat >= 4.0.0-0
 Requires: puppet >= 3.3.0
 Requires: puppetlabs-stdlib >= 4.1.0
 Buildarch: noarch
@@ -55,6 +55,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-2
+- migration to simplib and simpcat (lib/ only)
+
 * Fri Jan 16 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-1
 - Changed puppet-server requirement to puppet
 
@@ -69,7 +72,7 @@ fi
 - There was a bug in the 'identity' variable for polkit::local_authority where
   it would not properly accept arrays of users or groups.
 
-* Thu Dec 31 2012 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-1
+* Mon Dec 31 2012 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-1
 - Created a Cucumber test that includes module in manifest and checks for config files.
 
 * Fri Oct 26 2012 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-0
