@@ -78,6 +78,10 @@ define polkit::local_authority (
 ) {
   include 'polkit'
 
+  polkit_validate_identity($identity)
+
+  # Make the name safe
+  $l_name = regsubst($name,'\/','_')
   $authority_map = {
     'vendor'    => '10-vendor.d',
     'org'       => '20-org.d',
@@ -85,6 +89,10 @@ define polkit::local_authority (
     'local'     => '50-local.d',
     'mandatory' => '90-mandatory.d'
   }
+
+  $target_file = "${target_directory}/${authority_map[$authority]}/${l_name}.pkla"
+  validate_absolute_path($target_file)
+
   $authority_map_err_string = join(keys($authority_map),', ')
 
   $valid_results = [
@@ -97,16 +105,14 @@ define polkit::local_authority (
   ]
 
   $valid_results_err_string = join($valid_results,', ')
-  # Make the name safe
-  $l_name = regsubst($name,'\/','_')
 
-  $target_file = "${target_directory}/${authority_map[$authority]}/${l_name}.pkla"
+  $_file_ensure = $ensure ? {
+    'absent' => 'absent',
+    default  => 'file'
+  }
 
   file { $target_file:
-    ensure  => $ensure ? {
-      'absent' => 'absent',
-      default  => 'file'
-    },
+    ensure  => $_file_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -114,11 +120,8 @@ define polkit::local_authority (
     require => Package['polkit']
   }
 
-  polkit_validate_identity($identity)
-  validate_absolute_path($target_file)
-
   if ! has_key($authority_map, $authority) {
-    fail("Authority must be one of '$authority_map_err_string'")
+    fail("Authority must be one of '${authority_map_err_string}'")
   }
 
   if ! empty($result_active) {

@@ -9,5 +9,5 @@ describe 'polkit::local_authority' do
     :result_any => 'no'
   }}
 
-  it { should create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla') }
+  it { is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla') }
 end
