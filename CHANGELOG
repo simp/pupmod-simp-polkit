@@ -1,0 +1,22 @@
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-2
+- migration to simplib and simpcat (lib/ only)
+
+* Fri Jan 16 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-1
+- Changed puppet-server requirement to puppet
+
+* Tue Apr 08 2014 Kendall Moore <kmoore@keywcorp.com> - 4.1.0-0
+- Refactored manifests to pass all lint tests for puppet 3 and hiera compatibility.
+- Added spec tests.
+
+* Mon Oct 07 2013 Kendall Moore <kmoore@keywcorp.com> - 4.0.0-3
+- Updated all erb templates to properly scope variables.
+
+* Thu Jul 04 2013 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-2
+- There was a bug in the 'identity' variable for polkit::local_authority where
+  it would not properly accept arrays of users or groups.
+
+* Mon Dec 31 2012 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-1
+- Created a Cucumber test that includes module in manifest and checks for config files.
+
+* Fri Oct 26 2012 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.0.0-0
+- Initial module release
