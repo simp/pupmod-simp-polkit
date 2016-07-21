@@ -1,0 +1,2 @@
+Requires: pupmod-simp-simpcat >= 4.0.0-0
+Obsoletes: pupmod-polkit-test
