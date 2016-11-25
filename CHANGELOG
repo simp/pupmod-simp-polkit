@@ -1,3 +1,6 @@
+* Tue Nov 22 2016 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.0.0-0
+- Major version bump for SIMP 6
+
 * Mon Nov 21 2016 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.2-0
 - Remove compliance_map and general housekeeping
 
