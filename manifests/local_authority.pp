@@ -112,7 +112,7 @@ define polkit::local_authority (
     'auth_self',
     'auth_self_keep',
     'auth_admin',
-    'auth_admin_keep']]   $return_value     = undef 
+    'auth_admin_keep']]   $return_value     = undef
 ) {
   include 'polkit'
 
