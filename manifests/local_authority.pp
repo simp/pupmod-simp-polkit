@@ -58,23 +58,61 @@
 # [*result_inactive*]
 # [*result_any*]
 # [*return_value*]
+# String
+# One of
+#     'yes',
+#     'no',
+#     'auth_self',
+#     'auth_self_keep',
+#     'auth_admin',
+#     'auth_admin_keep'
+#
 #
 # == Authors
 #
 # * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define polkit::local_authority (
-  $identity,
-  $action,
-  $ensure = 'present',
-  $target_directory = '/etc/polkit-1/localauthority',
-  $authority = 'mandatory',
-  $order = '50',
-  $section_name = '',
-  $result_active = '',
-  $result_inactive = '',
-  $result_any = '',
-  $return_value = ''
+  Variant[String,
+          Array[String]]  $identity,
+  String                  $action,
+  Enum['present',
+       'absent',
+       'file',
+       'directory',
+       'link']            $ensure           = 'present',
+  Stdlib::Absolutepath    $target_directory = '/etc/polkit-1/localauthority',
+  Enum['vendor',
+       'org',
+       'site',
+       'local',
+       'mandatory']       $authority        = 'mandatory',
+  Integer                 $order            = 50,
+  String                  $section_name     = '',
+  Optional[Enum['yes',
+    'no',
+    'auth_self',
+    'auth_self_keep',
+    'auth_admin',
+    'auth_admin_keep']]   $result_active    = undef,
+  Optional[Enum['yes',
+    'no',
+    'auth_self',
+    'auth_self_keep',
+    'auth_admin',
+    'auth_admin_keep']]   $result_inactive  = undef,
+  Optional[Enum['yes',
+    'no',
+    'auth_self',
+    'auth_self_keep',
+    'auth_admin',
+    'auth_admin_keep']]   $result_any       = undef,
+  Optional[Enum['yes',
+    'no',
+    'auth_self',
+    'auth_self_keep',
+    'auth_admin',
+    'auth_admin_keep']]   $return_value     = undef 
 ) {
   include 'polkit'
 
@@ -91,7 +129,6 @@ define polkit::local_authority (
   }
 
   $target_file = "${target_directory}/${authority_map[$authority]}/${l_name}.pkla"
-  validate_absolute_path($target_file)
 
   $authority_map_err_string = join(keys($authority_map),', ')
 
@@ -124,17 +161,7 @@ define polkit::local_authority (
     fail("Authority must be one of '${authority_map_err_string}'")
   }
 
-  if ! empty($result_active) {
-    validate_array_member($result_active, $valid_results)
-  }
-  if ! empty($result_inactive) {
-    validate_array_member($result_inactive, $valid_results)
-  }
-  if ! empty($result_any) {
-    validate_array_member($result_any, $valid_results)
-  }
-
-  if $result_active == '' and $result_inactive == '' and $result_any == '' {
+  if ! ( $result_active or $result_inactive or $result_any ) {
     fail('You must set at least one of "result_active", "result_inactive", or "result_any"')
   }
 }

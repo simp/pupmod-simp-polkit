@@ -19,7 +19,6 @@ module Puppet::Parser::Functions
         polkit_validate_identity('foo')
         polkit_validate_identity('unix-group:groupname,unix-group:group*')
         polkit_validate_identity('unix-group:groupname;unix-group:group*')
-        validate_string(undef)
 
     ENDHEREDOC
 

@@ -5,9 +5,9 @@
   output << '[' + @l_section_name + ']'
   output << 'Identity=' + Array(@identity).join(';')
   output << 'Action=' + @action
-  not @result_active.empty? and output << 'ResultActive=' + @result_active
-  not @result_inactive.empty? and output << 'ResultInactive=' + @result_inactive
-  not @result_any.empty? and output << 'ResultAny=' + @result_any
-  not @return_value.empty? and output << 'ReturnValue=' + @return_value
+  @result_active and output << 'ResultActive=' + @result_active
+  @result_inactive and output << 'ResultInactive=' + @result_inactive
+  @result_any and output << 'ResultAny=' + @result_any
+  @return_value and output << 'ReturnValue=' + @return_value
 -%>
 <%= output.join("\n") %>
