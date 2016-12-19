@@ -1,76 +1,66 @@
-# == Define: polkit::local_authority
+# Add PolicyKit Local Authority policies to a system
 #
-# This define allows you to add PolicyKit Local Authority policies to a system.
-# See pklocalauthority(8) for information regarding the various options.
+# Only the default ``authority`` directories are currently supported
 #
-# Only the default 'authority' directories are currently supported.
+# @see pklocalauthority(8)
 #
-# == Examples
+# @example Local Test Policy
+#   polkit::local_authority { 'test_policy':
+#     identity        => 'unix-group:staff',
+#     action          => 'com.example.awesomeproduct.*',
+#     result_any      => 'no',
+#     result_inactive => 'no',
+#     result_active   => 'auth_admin'
+#   }
 #
-# polkit::local_authority { 'test_policy':
-#   identity        => 'unix-group:staff',
-#   action          => 'com.example.awesomeproduct.*',
-#   result_any      => 'no',
-#   result_inactive => 'no',
-#   result_active   => 'auth_admin'
-# }
+# @param name
+#   A descriptive, valid **filename** (not path) in which to house your pkla entries
 #
-# == Parameters
+#   * Do not include the leading number or the trailing ``.pkla``
 #
-# [*name*]
-#   A descriptive valid filename in which to house your pkla entries. Do not
-#   include the leading number or the trailing pkla.
+# @param identity
+#   Identities as designated by ``pklocalauthority(8)``
 #
-# [*identity*]
-#   An array of identities as designated by pklocalauthority(8)
-#   Single entries may be entered as a string, but a semicolon separated
-#   string should NOT be entered here.
+#   Single entries may be entered as a string, but a semicolon separated string
+#   should **NOT** be entered here.
 #
-# [*action*]
+# @param action
 #
-# [*ensure*]
-#   This passes directly down to the file type but only cares if you set it
-#   to 'absent'.
+# @param ensure
+#   This passes directly down to the file type but only cares if you set it to
+#   ``absent``
 #
-# [*target_directory*]
-#   The destination base directory for your pkla file.
-#   Anything may be used, but logical values are:
-#     * /etc/polkit-1/localauthority (default)
-#     * /var/lib/polkit-1/localauthority
+# @param target_directory
+#   The destination base directory for your ``pkla`` file
 #
-# [*authority*]
-#   The local authority directory in which to store the pkla file.
+#   * Anything may be used, but logical values are:
+#       * ``/etc/polkit-1/localauthority``
+#       * ``/var/lib/polkit-1/localauthority``
+#
+# @param authority
+#   The local authority directory in which to store the pkla file
+#
 #   Supported values are:
-#     * vendor
+#     * local
+#     * mandatory
 #     * org
 #     * site
-#     * local
-#     * mandatory (default)
+#     * vendor
 #
-# [*order*]
-#   The 'order' number given to your pkla file. Higher numbers override lower
-#   ones in alphabetical/numeric order.
+# @param order
+#   The ``order`` number given to your ``pkla`` file
 #
-# [*section_name*]
-#   The section name within the pkla file. Defaults to $name if not set.
+#   * Higher numbers override lower ones in alphanumeric order
 #
-# [*result_active*]
-# [*result_inactive*]
-# [*result_any*]
-# [*return_value*]
-# String
-# One of
-#     'yes',
-#     'no',
-#     'auth_self',
-#     'auth_self_keep',
-#     'auth_admin',
-#     'auth_admin_keep'
+# @param section_name
+#   The section name within the ``pkla`` file
 #
+# @param result_active
+# @param result_inactive
+# @param result_any
+# @param return_value
 #
-# == Authors
-#
-# * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define polkit::local_authority (
   Variant[String,
@@ -88,7 +78,7 @@ define polkit::local_authority (
        'local',
        'mandatory']       $authority        = 'mandatory',
   Integer                 $order            = 50,
-  String                  $section_name     = '',
+  String                  $section_name     = $name,
   Optional[Enum['yes',
     'no',
     'auth_self',
@@ -114,12 +104,17 @@ define polkit::local_authority (
     'auth_admin',
     'auth_admin_keep']]   $return_value     = undef
 ) {
-  include 'polkit'
+  include '::polkit'
 
   polkit_validate_identity($identity)
 
   # Make the name safe
-  $l_name = regsubst($name,'\/','_')
+  $_name = regsubst($name,'\/','_')
+
+  if !( $result_active or $result_inactive or $result_any ) {
+    fail('You must set at least one of "result_active", "result_inactive", or "result_any"')
+  }
+
   $authority_map = {
     'vendor'    => '10-vendor.d',
     'org'       => '20-org.d',
@@ -128,20 +123,7 @@ define polkit::local_authority (
     'mandatory' => '90-mandatory.d'
   }
 
-  $target_file = "${target_directory}/${authority_map[$authority]}/${l_name}.pkla"
-
-  $authority_map_err_string = join(keys($authority_map),', ')
-
-  $valid_results = [
-    'yes',
-    'no',
-    'auth_self',
-    'auth_self_keep',
-    'auth_admin',
-    'auth_admin_keep'
-  ]
-
-  $valid_results_err_string = join($valid_results,', ')
+  $target_file = "${target_directory}/${authority_map[$authority]}/${_name}.pkla"
 
   $_file_ensure = $ensure ? {
     'absent' => 'absent',
@@ -153,15 +135,7 @@ define polkit::local_authority (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('polkit/local_authority.erb'),
+    content => template("${module_name}/local_authority.erb"),
     require => Package['polkit']
-  }
-
-  if ! has_key($authority_map, $authority) {
-    fail("Authority must be one of '${authority_map_err_string}'")
-  }
-
-  if ! ( $result_active or $result_inactive or $result_any ) {
-    fail('You must set at least one of "result_active", "result_inactive", or "result_any"')
   }
 }
