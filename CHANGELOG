@@ -1,3 +1,7 @@
+* Mon Dec 19 2016 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.0.0-0
+- Strong Typing
+- Code cleanup
+
 * Tue Nov 22 2016 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.0.0-0
 - Major version bump for SIMP 6
 
