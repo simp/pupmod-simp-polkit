@@ -1,14 +1,10 @@
-# == Class: polkit
+# Set up PolicyKit
 #
-# Set up polkit.
+# Allows you to set up and manipulate PolicyKit objects
 #
-# Allows you to set up and manipulate PolicyKit objects. See the PolicyKit
-# documentation for details.
-# http://www.freedesktop.org/software/polkit/docs/latest/
+# @see http://www.freedesktop.org/software/polkit/docs/latest/ PolicyKit Documentation
 #
-# == Authors
-#
-# * Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class polkit {
   package { 'polkit':

@@ -1,0 +1,5 @@
+[foo_title]
+Identity=unix-user:foouser
+Action=com.example.domain
+ResultActive=yes
+ResultInactive=no
