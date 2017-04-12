@@ -95,7 +95,6 @@ define polkit::local_authority (
   }
 
   $target_file = "${target_directory}/${authority_map[$authority]}/${_name}.pkla"
-  inspect($target_file)
 
   $_file_ensure = $ensure ? {
     'absent' => 'absent',

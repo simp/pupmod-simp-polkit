@@ -63,21 +63,19 @@ describe 'polkit::local_authority' do
         ) }
       end
 
-      context 'authority_map' do
-        authority_map = {
-          'vendor'    => '/etc/polkit-1/localauthority/10-vendor.d/test_title.pkla',
-          'org'       => '/etc/polkit-1/localauthority/20-org.d/test_title.pkla',
-          'site'      => '/etc/polkit-1/localauthority/30-site.d/test_title.pkla',
-          'local'     => '/etc/polkit-1/localauthority/50-local.d/test_title.pkla',
-          'mandatory' => '/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla'
-        }
-        authority_map.each do |authority,filename|
+      authority_map = {
+        'vendor'    => '/etc/polkit-1/localauthority/10-vendor.d/test_title.pkla',
+        'org'       => '/etc/polkit-1/localauthority/20-org.d/test_title.pkla',
+        'site'      => '/etc/polkit-1/localauthority/30-site.d/test_title.pkla',
+        'local'     => '/etc/polkit-1/localauthority/50-local.d/test_title.pkla',
+        'mandatory' => '/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla'
+      }
+      authority_map.each do |authority,filename|
+        context "with authority => #{authority}" do
           let(:params) { req_params.merge( {
             :result_any => 'no',
             :authority  => authority,
           }) }
-          # require "pry";binding.pry
-          it { puts params; is_expected.to create_file(filename) }
           it { is_expected.to create_file(filename).with_content(<<-EOF.gsub(/^\s+/,'')
             [test_title]
             Identity=unix-user:foouser
