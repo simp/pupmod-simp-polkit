@@ -4,10 +4,14 @@
 #
 # @see http://www.freedesktop.org/software/polkit/docs/latest/ PolicyKit Documentation
 #
+# @param package_ensure The ensure status of packages
+#
 # @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
-class polkit {
+class polkit (
+  Polkit::PackageEnsure $package_ensure = 'installed'
+) {
   package { 'polkit':
-    ensure => 'latest'
+    ensure => $package_ensure,
   }
 }
