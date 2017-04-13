@@ -9,7 +9,7 @@
 # @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 class polkit (
-  Polkit::PackageEnsure $package_ensure = 'installed'
+  Polkit::PackageEnsure $package_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })
 ) {
   package { 'polkit':
     ensure => $package_ensure,
