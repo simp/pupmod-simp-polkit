@@ -1,4 +1,0 @@
-[test_title]
-Identity=unix-user:foouser
-Action=com.example.domain
-ResultAny=no

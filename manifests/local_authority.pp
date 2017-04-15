@@ -63,48 +63,19 @@
 # @author Trevor Vaughan <mailto:tvaughan@onyxpoint.com>
 #
 define polkit::local_authority (
-  Variant[String,
-          Array[String]]  $identity,
-  String                  $action,
-  Enum['present',
-        'absent',
-        'file',
-        'directory',
-        'link']           $ensure           = 'present',
-  Stdlib::Absolutepath    $target_directory = '/etc/polkit-1/localauthority',
-  Enum['vendor',
-        'org',
-        'site',
-        'local',
-        'mandatory']      $authority        = 'mandatory',
-  Integer                 $order            = 50,
-  String                  $section_name     = $name,
-  Optional[Enum['yes',
-    'no',
-    'auth_self',
-    'auth_self_keep',
-    'auth_admin',
-    'auth_admin_keep']]   $result_active    = undef,
-  Optional[Enum['yes',
-    'no',
-    'auth_self',
-    'auth_self_keep',
-    'auth_admin',
-    'auth_admin_keep']]   $result_inactive  = undef,
-  Optional[Enum['yes',
-    'no',
-    'auth_self',
-    'auth_self_keep',
-    'auth_admin',
-    'auth_admin_keep']]   $result_any       = undef,
-  Optional[Enum['yes',
-    'no',
-    'auth_self',
-    'auth_self_keep',
-    'auth_admin',
-    'auth_admin_keep']]   $return_value     = undef
+  Variant[String,Array[String]]   $identity,
+  String                          $action,
+  Enum['file','absent','present'] $ensure           = 'present',
+  Stdlib::Absolutepath            $target_directory = '/etc/polkit-1/localauthority',
+  Polkit::Authority               $authority        = 'mandatory',
+  Integer                         $order            = 50,
+  String                          $section_name     = $name,
+  Polkit::Result                  $result_active    = undef,
+  Polkit::Result                  $result_inactive  = undef,
+  Polkit::Result                  $result_any       = undef,
+  Polkit::Result                  $return_value     = undef
 ) {
-  include '::polkit'
+  include 'polkit'
 
   polkit_validate_identity($identity)
 
