@@ -11,7 +11,5 @@
 class polkit (
   Polkit::PackageEnsure $package_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })
 ) {
-  package { 'polkit':
-    ensure => $package_ensure,
-  }
+  package { 'polkit': ensure => $package_ensure }
 }

@@ -7,9 +7,11 @@ describe 'polkit' do
         facts
       end
 
-      it { is_expected.to compile.with_all_deps }
-      it { is_expected.to create_class('polkit') }
-      it { is_expected.to contain_package('polkit').with_ensure('installed') }
+      context 'with default parameters' do
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to create_class('polkit') }
+        it { is_expected.to contain_package('polkit').with_ensure('installed') }
+      end
 
     end
   end
