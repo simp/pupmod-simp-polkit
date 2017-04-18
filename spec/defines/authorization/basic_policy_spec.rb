@@ -70,7 +70,7 @@ polkit.addRule(function(action, subject) {
 // This file is managed by Puppet
 polkit.addRule(function(action, subject) {
   if (some whacky javascript hack) {
-      polkit.log("action=" + action); 
+      polkit.log("action=" + action);
       polkit.log("subject=" + subject);
       return polkit.Result.AUTH_ADMIN;
     }
@@ -80,6 +80,28 @@ polkit.addRule(function(action, subject) {
         }) }
       end
 
+      context 'without logging' do
+        let(:title) { 'test' }
+        let(:params) {{
+          :ensure      => 'present',
+          :result      => 'auth_admin',
+          :condition   => 'some whacky javascript hack',
+          :log_action  => false,
+          :log_subject => false
+        }}
+        it { is_expected.to create_polkit__authorization__rule('test').with({
+          :ensure => 'present',
+          :content => <<-EOF
+// This file is managed by Puppet
+polkit.addRule(function(action, subject) {
+  if (some whacky javascript hack) {
+      return polkit.Result.AUTH_ADMIN;
+    }
+  }
+});
+          EOF
+        }) }
+      end
 
     end
   end

@@ -102,8 +102,12 @@ define polkit::authorization::basic_policy (
   // This file is managed by Puppet
   polkit.addRule(function(action, subject) {
     if (<%= $_condition -%>) {
-        <% if $log_action  { -%> polkit.log("action=" + action); <% } %>
-        <% if $log_subject { -%> polkit.log("subject=" + subject); <% } %>
+        <%- if $log_action  { -%>
+        polkit.log("action=" + action);
+        <%- } -%>
+        <%- if $log_subject { -%>
+        polkit.log("subject=" + subject);
+        <%- } -%>
         return polkit.Result.<%= $result.upcase -%>;
       }
     }
