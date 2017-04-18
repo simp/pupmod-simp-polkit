@@ -16,7 +16,7 @@ define polkit::authorization::rule (
   Stdlib::AbsolutePath     $rulesd   = '/etc/polkit-1/rules.d'
 ) {
 
-  $_name = regsubst($name,'\/','_')
+  $_name = regsubst($name.downcase, '( |/)', '_', 'G')
 
   file { "${rulesd}/${priority}-${_name}.rules":
     ensure  => $ensure,

@@ -17,12 +17,12 @@ describe 'polkit::authorization::rule' do
       end
 
       context 'with a name that requires substitution' do
-        let(:title) {'libvirt/users'}
+        let(:title) {'A rule that manages libvirt/users'}
         let(:params) {{
           :ensure  => 'present',
           :content => 'totally javascript trust me it me your friend'
         }}
-        it { is_expected.to create_file('/etc/polkit-1/rules.d/10-libvirt_users.rules') }
+        it { is_expected.to create_file('/etc/polkit-1/rules.d/10-a_rule_that_manages_libvirt_users.rules') }
       end
 
       context 'with a different priority and rulesd' do
