@@ -67,14 +67,16 @@
 define polkit::authorization::basic_policy (
   Enum['present','absent'] $ensure,
   Polkit::Result           $result,
-  Optional[String]         $action_id = undef,
-  Optional[String]         $group     = undef,
-  Optional[String]         $user      = undef,
-  Boolean                  $local     = false,
-  Boolean                  $active    = false,
-  Optional[String]         $condition = undef,
-  Integer[0,99]            $priority  = 10,
-  Stdlib::AbsolutePath     $rulesd    = '/etc/polkit-1/rules.d',
+  Optional[String]         $action_id   = undef,
+  Optional[String]         $group       = undef,
+  Optional[String]         $user        = undef,
+  Boolean                  $local       = false,
+  Boolean                  $active      = false,
+  Optional[String]         $condition   = undef,
+  Boolean                  $log_action  = true,
+  Boolean                  $log_subject = true,
+  Integer[0,99]            $priority    = 10,
+  Stdlib::AbsolutePath     $rulesd      = '/etc/polkit-1/rules.d',
 ) {
   if !$condition {
     if !$action_id {
@@ -96,11 +98,13 @@ define polkit::authorization::basic_policy (
     default => polkit::condition($action_id, $_opts)
   }
 
-  $_content = @("EOF")
+  $_content = inline_epp(@(EOF))
   // This file is managed by Puppet
   polkit.addRule(function(action, subject) {
-    if (${_condition}) {
-        return polkit.Result.${result.upcase};
+    if (<%= $_condition -%>) {
+        <% if $log_action  { -%> polkit.log("action=" + action); <% } %>
+        <% if $log_subject { -%> polkit.log("subject=" + subject); <% } %>
+        return polkit.Result.<%= $result.upcase -%>;
       }
     }
   });

@@ -23,6 +23,8 @@ describe 'polkit::authorization::basic_policy' do
 // This file is managed by Puppet
 polkit.addRule(function(action, subject) {
   if ((action.id == 'an.action') && subject.isInGroup('developers')) {
+      polkit.log("action=" + action);
+      polkit.log("subject=" + subject);
       return polkit.Result.YES;
     }
   }
@@ -45,6 +47,8 @@ polkit.addRule(function(action, subject) {
 // This file is managed by Puppet
 polkit.addRule(function(action, subject) {
   if ((action.id == 'an.action') && subject.user == 'person') {
+      polkit.log("action=" + action);
+      polkit.log("subject=" + subject);
       return polkit.Result.NO;
     }
   }
@@ -66,6 +70,8 @@ polkit.addRule(function(action, subject) {
 // This file is managed by Puppet
 polkit.addRule(function(action, subject) {
   if (some whacky javascript hack) {
+      polkit.log("action=" + action); 
+      polkit.log("subject=" + subject);
       return polkit.Result.AUTH_ADMIN;
     }
   }
