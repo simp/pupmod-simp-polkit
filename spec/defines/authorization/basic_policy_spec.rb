@@ -33,6 +33,30 @@ polkit.addRule(function(action, subject) {
         }) }
       end
 
+      context 'authorize list of groups to do an action' do
+        let(:title) { 'test' }
+        let(:params) {{
+          :ensure    => 'present',
+          :result    => 'yes',
+          :action_id => 'an.action',
+          :group     => ['developers0','developers1','developers2'],
+        }}
+        it { is_expected.to create_polkit__authorization__rule('test').with({
+          :ensure => 'present',
+          :content => <<-EOF
+// This file is managed by Puppet
+polkit.addRule(function(action, subject) {
+  if ((action.id == 'an.action') && subject.isInGroup('developers0') && subject.isInGroup('developers1') && subject.isInGroup('developers2')) {
+      polkit.log("action=" + action);
+      polkit.log("subject=" + subject);
+      return polkit.Result.YES;
+    }
+  }
+});
+          EOF
+        }) }
+      end
+
       context 'deny a user to do an action' do
         let(:title) { 'test' }
         let(:params) {{
