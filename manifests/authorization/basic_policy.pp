@@ -23,7 +23,7 @@
 #   polkit::authorization::basic_policy { 'Allow users to use libvirt':
 #     ensure    => present,
 #     group     => 'virtusers',
-#     result    => ''
+#     result    => 'yes'
 #     action_id => 'org.libvirt.unix.manage',
 #     priority  => 20,
 #     local     => true,
@@ -99,21 +99,12 @@ define polkit::authorization::basic_policy (
     default => polkit::condition($action_id, $_opts)
   }
 
-  $_content = inline_epp(@(EOF))
-  // This file is managed by Puppet
-  polkit.addRule(function(action, subject) {
-    if (<%= $_condition -%>) {
-        <%- if $log_action  { -%>
-        polkit.log("action=" + action);
-        <%- } -%>
-        <%- if $log_subject { -%>
-        polkit.log("subject=" + subject);
-        <%- } -%>
-        return polkit.Result.<%= $result.upcase -%>;
-      }
-    }
-  });
-  |EOF
+  $_content = epp('polkit/basic_policy.epp', {
+    '_condition'  => $_condition,
+    'log_action'  => $log_action,
+    'log_subject' => $log_subject,
+    'result'      => $result
+  })
 
   polkit::authorization::rule { $name:
     ensure   => $ensure,
