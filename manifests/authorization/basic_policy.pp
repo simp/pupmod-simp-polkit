@@ -41,17 +41,18 @@
 #
 # @param ensure Create or destroy the rules file
 #
-# @param result The end result of the polkit, like 'yes' or 'auth_admin'
+# @param result The authorization result of the polkit transaction, for
+#   example 'yes' or 'auth_admin'
 #
 # @param action_id The polkit action to operate on
 #
 #   * A list of available actions can be found by running `pkaction`
 #
-# @param group Group to check membership of
-#
 # @param user User to check
 #
-# @param local Check of the user is a local user. See man page for more
+# @param group The group(s) that the user checking authorization belongs to
+#
+# @param local Check if the user is a local user. See man page for more
 #   explaination.
 #
 # @param active Check if the user is currently active. See man page for more
@@ -68,8 +69,8 @@ define polkit::authorization::basic_policy (
   Enum['present','absent']            $ensure,
   Polkit::Result                      $result,
   Optional[String]                    $action_id   = undef,
-  Variant[Undef,String,Array[String]] $group       = undef,
   Variant[Undef,String,Array[String]] $user        = undef,
+  Variant[Undef,String,Array[String]] $group       = undef,
   Boolean                             $local       = false,
   Boolean                             $active      = false,
   Optional[String]                    $condition   = undef,
