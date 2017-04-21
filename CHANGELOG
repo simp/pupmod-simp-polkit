@@ -1,3 +1,8 @@
+* Mon Apr 17 2017 Nick Miller <nick.miller@onyxpoint.com> - 6.1.0-0
+- Add EL7 and polkit 106+ support by allowing javascript rules
+  - Added define to allow for easy placement of custom rules
+  - Added templated define to ease generation of basic rules
+
 * Mon Dec 19 2016 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 6.0.0-0
 - Strong Typing
 - Code cleanup
