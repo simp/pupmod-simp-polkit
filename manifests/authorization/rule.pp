@@ -17,7 +17,6 @@ define polkit::authorization::rule (
 ) {
 
   $_name = regsubst($name.downcase, '( |/|!|@|#|\$|%|\^|&|\*|[|])', '_', 'G')
-  inspect($_name)
 
   file { "${rulesd}/${priority}-${_name}.rules":
     ensure  => $ensure,
