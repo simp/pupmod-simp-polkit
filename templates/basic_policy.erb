@@ -1,0 +1,38 @@
+<%
+  cond = []
+
+  unless @condition
+    cond << "(action.id == '#{@action_id}')"
+    cond << 'subject.local'  if @local
+    cond << 'subject.active' if @active
+
+    if @user.is_a?(Array)
+      @user.each { |u| cond << "subject.user == '#{u}'" }
+    else
+      cond << "subject.user == '#{@user}'" if @user
+    end
+
+    if @group.is_a?(Array)
+      @group.each { |g| cond << "subject.isInGroup('#{g}')" }
+    else
+      cond << "subject.isInGroup('#{@group}')" if @group
+    end
+    _condition = cond.join(' && ')
+  else
+    _condition = @condition
+  end
+
+-%>
+// This file is managed by Puppet
+polkit.addRule(function(action, subject) {
+  if (<%= _condition -%>) {
+      <%- if @log_action -%>
+      polkit.log("action=" + action);
+      <%- end -%>
+      <%- if @log_subject -%>
+      polkit.log("subject=" + subject);
+      <%- end -%>
+      return polkit.Result.<%= @result.upcase -%>;
+    }
+  }
+});
