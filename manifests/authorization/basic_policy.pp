@@ -88,29 +88,11 @@ define polkit::authorization::basic_policy (
     fail('The version of Polkit available on EL6 does not support javascript configuration')
   }
 
-  $_opts = {
-    'group'  => $group,
-    'user'   => $user,
-    'local'  => $local,
-    'active' => $active,
-  }
-  $_condition = $condition ? {
-    String  => $condition,
-    default => polkit::condition($action_id, $_opts)
-  }
-
-  $_content = epp('polkit/basic_policy.epp', {
-    '_condition'  => $_condition,
-    'log_action'  => $log_action,
-    'log_subject' => $log_subject,
-    'result'      => $result
-  })
-
   polkit::authorization::rule { $name:
     ensure   => $ensure,
     priority => $priority,
     rulesd   => $rulesd,
-    content  => $_content,
+    content  => template('polkit/basic_policy.erb'),
   }
 
 }
