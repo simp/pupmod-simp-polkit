@@ -19,10 +19,11 @@
 #   * Do not include the leading number or the trailing ``.pkla``
 #
 # @param identity
-#   Identities as designated by ``pklocalauthority(8)``
+#   Identities as designated by ``pkla-check-authorization(8)``
 #
-#   Single entries may be entered as a string, but a semicolon separated string
-#   should **NOT** be entered here.
+#   Single entries may be entered as a String. Multiple entries should
+#   be represented as an Array of entries and **NOT** a semicolon
+#   separated string.
 #
 # @param action
 #
@@ -77,7 +78,7 @@ define polkit::local_authority (
 ) {
   include 'polkit'
 
-  polkit_validate_identity($identity)
+  polkit::validate_identity($identity)
 
   # Make the name safe
   $_name = regsubst($name,'\/','_')
