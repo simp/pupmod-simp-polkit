@@ -23,16 +23,14 @@ Puppet::Functions.create_function(:'polkit::validate_identity') do
   end
 
   def validate_identities(identities)
-    #TODO Verify that unix-netgroup was omitted intentionally.
-    #  unix-netgroup is also possible with a non-globbed group
     valid_headers = [
         'unix-user',
-        'unix-group'
+        'unix-group',
+        'unix-netgroup'
     ]
 
     identities.each do |entry|
-      #TODO Verify that 'default' identity (without a header) was omitted intentionally.
-      #next if entry = 'default'
+      next if entry == 'default'
 
       header,val = entry.split(':')
 
@@ -43,6 +41,10 @@ Puppet::Functions.create_function(:'polkit::validate_identity') do
       valid_name = Regexp.new(/^[A-Za-z0-9_.*-]+$/)
       if not valid_name.match(val) then
         fail("polkit::validate_identity(): Error, value '#{val}' is invalid for entry '#{entry}'")
+      end
+
+      if header == 'unix-netgroup' and val.include?('*')
+        fail("polkit::validate_identity(): Error, value '#{val}' cannot contain glob for entry '#{entry}'")
       end
     end
   end
