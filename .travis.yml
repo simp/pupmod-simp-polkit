@@ -83,3 +83,6 @@ jobs:
           user: simp
           password:
             secure: "MGBDDciwH/2hjG/bHkP+nIEq8MMMyQb8mXIAaXrqg3kVxmXfqO8cCFo0A2IYxM/27DN/uryo5aUd6AAtxR7IsKuuqOK4kFEzQVvJbD88LqcgGco2MyvK4PfGQsy6RPiHnBAEcgK5oSe8ldgjDd6KYLCS122vkNQEBtnpuz+yjWXi4UphHjeFk2WkgHKIZ+IQBuj6EasVmbnYi2D+gMwX5N3Xz4pr/7cvcxlsXcYYiTV1aBbp+597oWihjO8wnf8DAiAakmW8/L2eSpDBe1JeJok1Z7tzhq4ZUfholSuriIEJvVFWjSWushzJ3r7BPj4b3YoT8iDS1+NpYEGZDBIhM0ZCGrkSD+bqqdPrvRS3RvcPIWpJ86LGoGj4GTeUQaL1Kp125I9fgS9QL9yz30WUqqr9R8s3zN2W562HLqf2q6JizhF0dJg501odaoZaUdUirsQpdGAun/reobw0xmjA9u5lS1baFYYNxN7wdw6oj4QGA4lTqosKLLxgA1bN9artheOAmGEFgY6HsRYzmjcv67QzRkNNLwp6ISZ/Dob9CwrZnpCXpf02wpEWK+PN6jvYlWqw5RwrSaA+uy5gh+UYk9Ik7xb+lvxG20OSG74iCXuC8cabKYZH8AkfMZVSxyHXLPYwhvAkCRarq0Rd5gSsLz1r8etwn7R1ehrNkntRwq4="
+          on:
+            tags: true
+            condition: '($SKIP_FORGE_PUBLISH != true)'
