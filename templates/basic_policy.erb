@@ -33,6 +33,5 @@ polkit.addRule(function(action, subject) {
       polkit.log("subject=" + subject);
       <%- end -%>
       return polkit.Result.<%= @result.upcase -%>;
-    }
   }
 });

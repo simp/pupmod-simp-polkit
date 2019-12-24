@@ -1,4 +1,4 @@
-# Add a rule file containing javascript Polkit configuration to the system
+# @summary Add a rule file containing javascript Polkit configuration to the system
 #
 # @see polkit(8)
 #
@@ -39,35 +39,46 @@
 #     }
 #   });
 #
-# @param ensure Create or destroy the rules file
+# @param ensure
+#   Create or destroy the rules file
 #
-# @param result The authorization result of the polkit transaction, for
-#   example 'yes' or 'auth_admin'
+# @param result
+#   The authorization result of the polkit transaction, for example `yes` or `auth_admin`
 #
-# @param action_id The polkit action to operate on
+# @param action_id
+#   The polkit action to operate on
 #
 #   * A list of available actions can be found by running `pkaction`
 #
-# @param user User to check
+# @param user
+#   User to check
 #
-# @param group The group(s) that the user checking authorization belongs to
+# @param group
+#   The group(s) that the user checking authorization belongs to
 #
-# @param local Check if the user is a local user. See man page for more
-#   explaination.
+# @param local
+#   Check if the user is a local user. See man page for more explaination
 #
-# @param active Check if the user is currently active. See man page for more
-#   explaination.
+# @param active
+#   Check if the user is currently active. See man page for more explaination
 #
-# @param condition If specified, will be placed in the javascript condition to be met
-#   for polkit authorization
+# @param condition
+#   If specified, will be placed in the javascript condition to be met for polkit authorization
 #
-# @param priority Priority of the file to be created
+# @param log_action
+#   Log the action to the system log
+#
+# @param log_subject
+#   Log the subject to the system log
+#
+# @param priority
+#   Priority of the file to be created
 #
 # @param rulesd Location of the poklit rules directory
 #
 define polkit::authorization::basic_policy (
-  Enum['present','absent']            $ensure,
   Polkit::Result                      $result,
+  Enum['present','absent']            $ensure      = 'present',
   Optional[String]                    $action_id   = undef,
   Variant[Undef,String,Array[String]] $user        = undef,
   Variant[Undef,String,Array[String]] $group       = undef,
@@ -79,13 +90,12 @@ define polkit::authorization::basic_policy (
   Integer[0,99]                       $priority    = 10,
   Stdlib::AbsolutePath                $rulesd      = '/etc/polkit-1/rules.d',
 ) {
+  simplib::assert_metadata($module_name)
+
   if !$condition {
     if !$action_id {
       fail('If $condition is not specified, $action_id must be')
     }
-  }
-  if $facts['os']['release']['major'] == '6' {
-    fail('The version of Polkit available on EL6 does not support javascript configuration')
   }
 
   polkit::authorization::rule { $name:
@@ -94,5 +104,4 @@ define polkit::authorization::basic_policy (
     rulesd   => $rulesd,
     content  => template('polkit/basic_policy.erb'),
   }
-
 }
