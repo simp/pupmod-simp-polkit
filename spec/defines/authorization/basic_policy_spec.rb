@@ -26,7 +26,6 @@ polkit.addRule(function(action, subject) {
       polkit.log("action=" + action);
       polkit.log("subject=" + subject);
       return polkit.Result.YES;
-    }
   }
 });
           EOF
@@ -50,7 +49,6 @@ polkit.addRule(function(action, subject) {
       polkit.log("action=" + action);
       polkit.log("subject=" + subject);
       return polkit.Result.YES;
-    }
   }
 });
           EOF
@@ -74,7 +72,6 @@ polkit.addRule(function(action, subject) {
       polkit.log("action=" + action);
       polkit.log("subject=" + subject);
       return polkit.Result.NO;
-    }
   }
 });
           EOF
@@ -97,7 +94,6 @@ polkit.addRule(function(action, subject) {
       polkit.log("action=" + action);
       polkit.log("subject=" + subject);
       return polkit.Result.AUTH_ADMIN;
-    }
   }
 });
           EOF
@@ -120,13 +116,11 @@ polkit.addRule(function(action, subject) {
 polkit.addRule(function(action, subject) {
   if (some whacky javascript hack) {
       return polkit.Result.AUTH_ADMIN;
-    }
   }
 });
           EOF
         }) }
       end
-
     end
   end
 end

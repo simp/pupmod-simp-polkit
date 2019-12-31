@@ -13,8 +13,18 @@ If you find any issues, they can be submitted to our [JIRA](https://simp-project
 
 Please read our [Contribution Guide](https://simp.readthedocs.io/en/stable/contributors_guide/index.html).
 
-## Work in Progress
+## Module Description
 
-Please excuse us as we transition this code into the public domain.
+This module provides for the configuration of
+[polkit](https://www.freedesktop.org/software/polkit/docs/latest/) policies.
 
-Downloads, discussion, and patches are still welcome!
+## Reference
+
+Plesae see [REFERENCE.md](./REFERENCE.md) for details.
+
+# Development
+
+Please read our [Contribution Guide](https://simp.readthedocs.io/en/stable/contributors_guide/index.html).
+
+Visit the [project homepage](https://simp-project.com) and look at our issues on
+[JIRA](https://simp-project.atlassian.net).

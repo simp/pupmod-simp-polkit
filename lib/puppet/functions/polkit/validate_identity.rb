@@ -7,6 +7,8 @@ Puppet::Functions.create_function(:'polkit::validate_identity') do
   # @param identity Polkit identity; must begin with a 'unix-user:'
   #   or 'unix_group:' header; the value portion can contain a wildcard.
   #   For example, 'unix-user:username' or 'unix-group:mygroup*'
+  #
+  # @return None
   dispatch :validate_identity do
     required_param 'String', :identity
   end
@@ -14,6 +16,8 @@ Puppet::Functions.create_function(:'polkit::validate_identity') do
   # @param identities Array of Polkit identities; each must begin
   #   with a 'unix-user:' or 'unix_group:' header; each value portion
   #   can contain a wildcard.
+  #
+  # @return None
   dispatch :validate_identities do
     required_param 'Array[String]', :identities
   end
@@ -34,16 +38,16 @@ Puppet::Functions.create_function(:'polkit::validate_identity') do
 
       header,val = entry.split(':')
 
-      if not valid_headers.include?(header) then
+      unless valid_headers.include?(header)
         fail("polkit::validate_identity(): Error, identity specifier '#{header}' must be one of '#{valid_headers.join(', ')}' for entry '#{entry}'")
       end
 
       valid_name = Regexp.new(/^[A-Za-z0-9_.*-]+$/)
-      if not valid_name.match(val) then
+      unless valid_name.match(val)
         fail("polkit::validate_identity(): Error, value '#{val}' is invalid for entry '#{entry}'")
       end
 
-      if header == 'unix-netgroup' and val.include?('*')
+      if header == 'unix-netgroup' && val.include?('*')
         fail("polkit::validate_identity(): Error, value '#{val}' cannot contain glob for entry '#{entry}'")
       end
     end
