@@ -1,4 +1,4 @@
-* Tue Dec 24 2019 Trevor Vaughan - 6.2.0-0
+* Tue Dec 24 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.2.0-0
 - Add EL8 support
 - Drop EL6 support (it was non-functional)
 - Fix issue with basic_policy template that resulted in malformed rules
