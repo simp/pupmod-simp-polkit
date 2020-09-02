@@ -2,11 +2,10 @@ require 'spec_helper'
 
 describe 'polkit::authorization::basic_policy' do
   supported_os = on_supported_os.delete_if { |e| e =~ /-6-/ } #TODO do this right
-  supported_os.each do |os, facts|
-  # on_supported_os.each do |os, facts|
+  supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do
-        facts
+        os_facts
       end
 
       context 'authorize group to do an action' do
