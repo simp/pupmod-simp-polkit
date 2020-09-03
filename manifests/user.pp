@@ -39,13 +39,7 @@ class polkit::user (
         $_hidepid_loglevel = 'debug'
       }
 
-      notify { "${module_name}::user - hidepid warning":
-        loglevel => $_hidepid_loglevel,
-        message  => @("HIDEPID_WARNING")
-          The "gid" option on "/proc" must be set if "hidepid" > 0.
-          Set '${module_name}::user::report_proc_issues = false' to hide this message.
-          | - HIDEPID_WARNING
-      }
+      class { 'polkit::user::hidepid_notify': log_level => $_hidepid_loglevel }
     }
   }
 

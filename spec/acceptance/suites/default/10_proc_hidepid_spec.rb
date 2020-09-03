@@ -12,21 +12,30 @@ describe 'polkit with /proc hidepid=2' do
 
     hosts.each do |host|
       context "on #{host}" do
+        it 'remounts /proc with hidepid=2' do
+          on(host, 'mount -o remount,hidepid=2 /proc')
+        end
+
+        it 'shows a notification message but does not restart the service' do
+          output = apply_manifest_on(host, manifest, :accept_all_exit_codes => true).output
+
+          expect(output).to match(/hidepid warning/)
+          expect(output).not_to match(/Service/)
+        end
+
         # DO NOT DO THIS IN PRODUCTION - JUST FOR TESTING
         it 'remounts /proc with hidepid=2 and gid=100' do
           on(host, 'mount -o remount,hidepid=2,gid=100 /proc')
         end
 
-        it 'applies with no errors' do
-          apply_manifest_on(host, manifest)
+        it 'applies with no errors and does not show a notification message' do
+          output = apply_manifest_on(host, manifest).output
+
+          expect(output).not_to match(/hidepid warning/)
         end
 
         it 'is idempotent' do
           apply_manifest_on(host, manifest, catch_changes: true)
-        end
-
-        it 'allows anyone to run pkexec commands without authentication' do
-          on(host, 'runuser -u test pkexec ls /root')
         end
 
         it 'does not show pkttyagent warnings when running service restarts' do
