@@ -92,6 +92,8 @@ define polkit::authorization::basic_policy (
 ) {
   simplib::assert_metadata($module_name)
 
+  include polkit
+
   if !$condition {
     if !$action_id {
       fail('If $condition is not specified, $action_id must be')
