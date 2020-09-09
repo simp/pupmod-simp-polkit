@@ -2,17 +2,8 @@
 #
 # This was moved into a separate class for resource notification chaining correctness
 #
-# @param user
-#   The user that `polkit` runs as
-#
-# @param user_options
-#   Allows setting of any of the usual puppet `User` resource options. Will
-#   have the GID assigned to `/proc` added to the `groups` to preserve proper
-#   system functionality.
-#
-# @param report_proc_issues
-#   Actively notify the user about issues with the `hidepid` setting on the
-#   `/proc` filesystem
+# @param log_level
+#   The log level to use when generating the notification message
 #
 # @author https://github.com/simp/pupmod-simp-polkit/graphs/contributors
 #

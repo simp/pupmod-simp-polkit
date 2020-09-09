@@ -10,6 +10,7 @@
 * [`polkit::install`](#polkitinstall): Manage the polkit package
 * [`polkit::service`](#polkitservice): Ensure that the polkit service is running
 * [`polkit::user`](#polkituser): Manage the `polkit` user
+* [`polkit::user::hidepid_notify`](#polkituserhidepid_notify): A notification for hidepid user creation
 
 ### Defined types
 
@@ -152,6 +153,22 @@ Actively notify the user about issues with the `hidepid` setting on the
 `/proc` filesystem
 
 Default value: ``true``
+
+### `polkit::user::hidepid_notify`
+
+This was moved into a separate class for resource notification chaining correctness
+
+#### Parameters
+
+The following parameters are available in the `polkit::user::hidepid_notify` class.
+
+##### `log_level`
+
+Data type: `Any`
+
+The log level to use when generating the notification message
+
+Default value: `'warning'`
 
 ## Defined types
 
