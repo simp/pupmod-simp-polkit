@@ -18,8 +18,9 @@ define polkit::authorization::rule (
   Integer[0,99]            $priority = 10,
   Stdlib::AbsolutePath     $rulesd   = '/etc/polkit-1/rules.d'
 ) {
-
   simplib::assert_metadata($module_name)
+
+  include polkit
 
   $_name = regsubst($name.downcase, '( |/|!|@|#|\$|%|\^|&|\*|[|])', '_', 'G')
 

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe 'polkit::local_authority' do
-  on_supported_os.each do |os, facts|
+  on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do
-        facts
+        os_facts
       end
 
       let(:title) {'test_title'}
