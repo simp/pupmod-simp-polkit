@@ -63,6 +63,17 @@ The ensure status of packages
 
 Default value: `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })`
 
+##### `warn_on_unsupported_os`
+
+Data type: `Boolean`
+
+Warn if the module is trying to be used on an unsupported OS
+
+* The module will not fail on an unsupported OS but also will not perform
+  any action
+
+Default value: ``true``
+
 ### `polkit::install`
 
 Manage the polkit package

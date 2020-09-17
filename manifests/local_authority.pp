@@ -76,38 +76,42 @@ define polkit::local_authority (
   Polkit::Result                  $result_any       = undef,
   Polkit::Result                  $return_value     = undef
 ) {
-  include 'polkit'
 
-  polkit::validate_identity($identity)
+  # For backwards compatibility purposes, this defined type is inert if called from an unsupported OS
+  if simplib::module_metadata::os_supported( load_module_metadata($module_name), { 'release_match' => 'major' }) {
+    include 'polkit'
 
-  # Make the name safe
-  $_name = regsubst($name,'\/','_')
+    polkit::validate_identity($identity)
 
-  if !( $result_active or $result_inactive or $result_any ) {
-    fail('You must set at least one of "result_active", "result_inactive", or "result_any"')
-  }
+    # Make the name safe
+    $_name = regsubst($name,'\/','_')
 
-  $authority_map = {
-    'vendor'    => '10-vendor.d',
-    'org'       => '20-org.d',
-    'site'      => '30-site.d',
-    'local'     => '50-local.d',
-    'mandatory' => '90-mandatory.d'
-  }
+    if !( $result_active or $result_inactive or $result_any ) {
+      fail('You must set at least one of "result_active", "result_inactive", or "result_any"')
+    }
 
-  $target_file = "${target_directory}/${authority_map[$authority]}/${_name}.pkla"
+    $authority_map = {
+      'vendor'    => '10-vendor.d',
+      'org'       => '20-org.d',
+      'site'      => '30-site.d',
+      'local'     => '50-local.d',
+      'mandatory' => '90-mandatory.d'
+    }
 
-  $_file_ensure = $ensure ? {
-    'absent' => 'absent',
-    default  => 'file'
-  }
+    $target_file = "${target_directory}/${authority_map[$authority]}/${_name}.pkla"
 
-  file { $target_file:
-    ensure  => $_file_ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template("${module_name}/local_authority.erb"),
-    require => Package['polkit']
+    $_file_ensure = $ensure ? {
+      'absent' => 'absent',
+      default  => 'file'
+    }
+
+    file { $target_file:
+      ensure  => $_file_ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template("${module_name}/local_authority.erb"),
+      require => Package['polkit']
+    }
   }
 }

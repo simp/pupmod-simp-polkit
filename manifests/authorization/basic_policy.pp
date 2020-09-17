@@ -90,20 +90,21 @@ define polkit::authorization::basic_policy (
   Integer[0,99]                       $priority    = 10,
   Stdlib::AbsolutePath                $rulesd      = '/etc/polkit-1/rules.d',
 ) {
-  simplib::assert_metadata($module_name)
+  # For backwards compatibility purposes, this defined type is inert if called from an unsupported OS
+  if simplib::module_metadata::os_supported( load_module_metadata($module_name), { 'release_match' => 'major' }) {
+    include polkit
 
-  include polkit
-
-  if !$condition {
-    if !$action_id {
-      fail('If $condition is not specified, $action_id must be')
+    if !$condition {
+      if !$action_id {
+        fail('If $condition is not specified, $action_id must be')
+      }
     }
-  }
 
-  polkit::authorization::rule { $name:
-    ensure   => $ensure,
-    priority => $priority,
-    rulesd   => $rulesd,
-    content  => template('polkit/basic_policy.erb'),
+    polkit::authorization::rule { $name:
+      ensure   => $ensure,
+      priority => $priority,
+      rulesd   => $rulesd,
+      content  => template('polkit/basic_policy.erb'),
+    }
   }
 }

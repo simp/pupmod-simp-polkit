@@ -6,6 +6,8 @@
 - Ensure that the polkit user is managed by default and placed into the
   supplementary group bound to the 'gid' option on '/proc' if one is set to work
   around issues with 'hidepid' > 0.
+- Made the entire main class inert on unsupported OSs and log a warning on the
+  server that can be disabled
 
 * Tue Dec 24 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.2.0-0
 - Add EL8 support
