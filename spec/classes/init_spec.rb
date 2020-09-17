@@ -23,7 +23,16 @@ describe 'polkit' do
 
   context 'on Windows' do
     let(:facts) do
-      FacterDB.get_facts([{:osfamily => 'windows'}]).last
+      {
+        :os => {
+         "architecture"=>"x64",
+         "family"=>"windows",
+         "hardware"=>"x86_64",
+         "name"=>"windows",
+         "release"=>{"full"=>"2008 R2", "major"=>"2008 R2"},
+         "windows"=>{"system32"=>"C:\\Windows\\system32"}
+        }
+      }
     end
 
     let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
