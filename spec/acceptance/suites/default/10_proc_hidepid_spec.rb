@@ -29,7 +29,7 @@ describe 'polkit with /proc hidepid=2' do
       end
     end
 
-    context "on #{host}" do
+    context "Set hidepid and gid on /proc on #{host}" do
       # DO NOT DO THIS IN PRODUCTION - JUST FOR TESTING
       it 'remounts /proc with hidepid=2 and gid=100' do
         on(host, 'mount -o remount,hidepid=2,gid=100 /proc')
