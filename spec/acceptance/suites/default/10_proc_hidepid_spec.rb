@@ -23,11 +23,6 @@ describe 'polkit with /proc hidepid=2' do
         expect(output).not_to match(/Service/)
       end
 
-      # See https://simp-project.atlassian.net/browse/SIMP-8228 for the issue this tests.
-      it 'does not show pkttyagent warnings when running service restarts' do
-        expect(on(host, 'service foo restart', :accept_all_exit_codes => true).output)
-          .not_to match(%r{pkttyagent.+WARNING})
-      end
     end
 
     context "Set hidepid and gid on /proc on #{host}" do
@@ -48,7 +43,7 @@ describe 'polkit with /proc hidepid=2' do
 
       # See https://simp-project.atlassian.net/browse/SIMP-8228 for the issue this tests.
       it 'does not show pkttyagent warnings when running service restarts' do
-        expect(on(host, 'service foo restart', :accept_all_exit_codes => true).output)
+        expect(on(host, 'systemctl restart foo', :accept_all_exit_codes => true).output)
           .not_to match(%r{pkttyagent.+WARNING})
       end
     end
