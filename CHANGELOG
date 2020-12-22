@@ -1,3 +1,6 @@
+* Sat Dec 19 2020 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.3.1
+- Removed EL6 support
+
 * Wed Sep 02 2020 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.3.0-0
 - Added the following classes
   - polkit::install

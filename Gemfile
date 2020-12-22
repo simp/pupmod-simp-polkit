@@ -1,3 +1,9 @@
+# ------------------------------------------------------------------------------
+#         NOTICE: **This file is maintained with puppetsync**
+#
+# This file is automatically updated as part of a puppet module baseline.
+# The next baseline sync will overwrite any local changes made to this file.
+# ------------------------------------------------------------------------------
 gem_sources = ENV.fetch('GEM_SERVERS','https://rubygems.org').split(/[, ]+/)
 
 ENV['PDK_DISABLE_ANALYTICS'] ||= 'true'
@@ -26,9 +32,6 @@ group :development do
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-doc'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
-  gem 'rubocop-i18n'
 end
 
 group :system_tests do
