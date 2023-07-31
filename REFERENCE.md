@@ -7,30 +7,30 @@
 ### Classes
 
 * [`polkit`](#polkit): Set up PolicyKit
-* [`polkit::install`](#polkitinstall): Manage the polkit package
-* [`polkit::service`](#polkitservice): Ensure that the polkit service is running
-* [`polkit::user`](#polkituser): Manage the `polkit` user
-* [`polkit::user::hidepid_notify`](#polkituserhidepid_notify): A notification for hidepid user creation
+* [`polkit::install`](#polkit--install): Manage the polkit package
+* [`polkit::service`](#polkit--service): Ensure that the polkit service is running
+* [`polkit::user`](#polkit--user): Manage the `polkit` user
+* [`polkit::user::hidepid_notify`](#polkit--user--hidepid_notify): A notification for hidepid user creation
 
 ### Defined types
 
-* [`polkit::authorization::basic_policy`](#polkitauthorizationbasic_policy): Add a rule file containing javascript Polkit configuration to the system
-* [`polkit::authorization::rule`](#polkitauthorizationrule): Add a rule file containing javascript Polkit configuration to the system
-* [`polkit::local_authority`](#polkitlocal_authority): Add PolicyKit Local Authority policies to a system  Only the default ``authority`` directories are currently supported
+* [`polkit::authorization::basic_policy`](#polkit--authorization--basic_policy): Add a rule file containing javascript Polkit configuration to the system
+* [`polkit::authorization::rule`](#polkit--authorization--rule): Add a rule file containing javascript Polkit configuration to the system
+* [`polkit::local_authority`](#polkit--local_authority): Add PolicyKit Local Authority policies to a system  Only the default ``authority`` directories are currently supported
 
 ### Functions
 
-* [`polkit::validate_identity`](#polkitvalidate_identity): Validate that all entries are valid PolicyKit identities per pkla-check-authorization(8).  Abort catalog compilation if any entry fails this 
+* [`polkit::validate_identity`](#polkit--validate_identity): Validate that all entries are valid PolicyKit identities per pkla-check-authorization(8).  Abort catalog compilation if any entry fails this 
 
 ### Data types
 
-* [`Polkit::Authority`](#polkitauthority): polkit authority types
-* [`Polkit::PackageEnsure`](#polkitpackageensure): Package ensure type
-* [`Polkit::Result`](#polkitresult): Polkit result types
+* [`Polkit::Authority`](#Polkit--Authority): polkit authority types
+* [`Polkit::PackageEnsure`](#Polkit--PackageEnsure): Package ensure type
+* [`Polkit::Result`](#Polkit--Result): Polkit result types
 
 ## Classes
 
-### `polkit`
+### <a name="polkit"></a>`polkit`
 
 Allows you to set up and manipulate PolicyKit objects
 
@@ -40,9 +40,13 @@ Allows you to set up and manipulate PolicyKit objects
 
 #### Parameters
 
-The following parameters are available in the `polkit` class.
+The following parameters are available in the `polkit` class:
 
-##### `manage_polkit_user`
+* [`manage_polkit_user`](#-polkit--manage_polkit_user)
+* [`package_ensure`](#-polkit--package_ensure)
+* [`warn_on_unsupported_os`](#-polkit--warn_on_unsupported_os)
+
+##### <a name="-polkit--manage_polkit_user"></a>`manage_polkit_user`
 
 Data type: `Boolean`
 
@@ -53,9 +57,9 @@ Enables managment of the `$polkit_user`
 
 @see `polkit::user`
 
-Default value: ``true``
+Default value: `true`
 
-##### `package_ensure`
+##### <a name="-polkit--package_ensure"></a>`package_ensure`
 
 Data type: `Polkit::PackageEnsure`
 
@@ -63,7 +67,7 @@ The ensure status of packages
 
 Default value: `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })`
 
-##### `warn_on_unsupported_os`
+##### <a name="-polkit--warn_on_unsupported_os"></a>`warn_on_unsupported_os`
 
 Data type: `Boolean`
 
@@ -72,17 +76,20 @@ Warn if the module is trying to be used on an unsupported OS
 * The module will not fail on an unsupported OS but also will not perform
   any action
 
-Default value: ``true``
+Default value: `true`
 
-### `polkit::install`
+### <a name="polkit--install"></a>`polkit::install`
 
 Manage the polkit package
 
 #### Parameters
 
-The following parameters are available in the `polkit::install` class.
+The following parameters are available in the `polkit::install` class:
 
-##### `package_name`
+* [`package_name`](#-polkit--install--package_name)
+* [`package_ensure`](#-polkit--install--package_ensure)
+
+##### <a name="-polkit--install--package_name"></a>`package_name`
 
 Data type: `String[1]`
 
@@ -90,7 +97,7 @@ The name of the package to manage
 
 Default value: `'polkit'`
 
-##### `package_ensure`
+##### <a name="-polkit--install--package_ensure"></a>`package_ensure`
 
 Data type: `Variant[String[1],Boolean]`
 
@@ -98,15 +105,19 @@ Data type: `Variant[String[1],Boolean]`
 
 Default value: `$polkit::package_ensure`
 
-### `polkit::service`
+### <a name="polkit--service"></a>`polkit::service`
 
 Ensure that the polkit service is running
 
 #### Parameters
 
-The following parameters are available in the `polkit::service` class.
+The following parameters are available in the `polkit::service` class:
 
-##### `ensure`
+* [`ensure`](#-polkit--service--ensure)
+* [`enable`](#-polkit--service--enable)
+* [`service_name`](#-polkit--service--service_name)
+
+##### <a name="-polkit--service--ensure"></a>`ensure`
 
 Data type: `Variant[String[1],Boolean]`
 
@@ -114,15 +125,15 @@ Data type: `Variant[String[1],Boolean]`
 
 Default value: `'running'`
 
-##### `enable`
+##### <a name="-polkit--service--enable"></a>`enable`
 
 Data type: `Boolean`
 
 `enable` state from the service resource
 
-Default value: ``true``
+Default value: `true`
 
-##### `service_name`
+##### <a name="-polkit--service--service_name"></a>`service_name`
 
 Data type: `String[1]`
 
@@ -130,15 +141,19 @@ The `name` of the service to manage
 
 Default value: `'polkit'`
 
-### `polkit::user`
+### <a name="polkit--user"></a>`polkit::user`
 
 Manage the `polkit` user
 
 #### Parameters
 
-The following parameters are available in the `polkit::user` class.
+The following parameters are available in the `polkit::user` class:
 
-##### `user`
+* [`user`](#-polkit--user--user)
+* [`user_options`](#-polkit--user--user_options)
+* [`report_proc_issues`](#-polkit--user--report_proc_issues)
+
+##### <a name="-polkit--user--user"></a>`user`
 
 Data type: `String[1]`
 
@@ -146,7 +161,7 @@ The user that `polkit` runs as
 
 Default value: `'polkitd'`
 
-##### `user_options`
+##### <a name="-polkit--user--user_options"></a>`user_options`
 
 Data type: `Hash`
 
@@ -156,24 +171,26 @@ system functionality.
 
 Default value: `{}`
 
-##### `report_proc_issues`
+##### <a name="-polkit--user--report_proc_issues"></a>`report_proc_issues`
 
 Data type: `Boolean`
 
 Actively notify the user about issues with the `hidepid` setting on the
 `/proc` filesystem
 
-Default value: ``true``
+Default value: `true`
 
-### `polkit::user::hidepid_notify`
+### <a name="polkit--user--hidepid_notify"></a>`polkit::user::hidepid_notify`
 
 This was moved into a separate class for resource notification chaining correctness
 
 #### Parameters
 
-The following parameters are available in the `polkit::user::hidepid_notify` class.
+The following parameters are available in the `polkit::user::hidepid_notify` class:
 
-##### `log_level`
+* [`log_level`](#-polkit--user--hidepid_notify--log_level)
+
+##### <a name="-polkit--user--hidepid_notify--log_level"></a>`log_level`
 
 Data type: `Any`
 
@@ -183,7 +200,7 @@ Default value: `'warning'`
 
 ## Defined types
 
-### `polkit::authorization::basic_policy`
+### <a name="polkit--authorization--basic_policy"></a>`polkit::authorization::basic_policy`
 
 The intention of this define is to make it easy to add simple polkit rules
 to a system. An example simple rule template is shown below:
@@ -232,9 +249,22 @@ polkit.addRule(function(action, subject) {
 
 #### Parameters
 
-The following parameters are available in the `polkit::authorization::basic_policy` defined type.
+The following parameters are available in the `polkit::authorization::basic_policy` defined type:
 
-##### `ensure`
+* [`ensure`](#-polkit--authorization--basic_policy--ensure)
+* [`result`](#-polkit--authorization--basic_policy--result)
+* [`action_id`](#-polkit--authorization--basic_policy--action_id)
+* [`user`](#-polkit--authorization--basic_policy--user)
+* [`group`](#-polkit--authorization--basic_policy--group)
+* [`local`](#-polkit--authorization--basic_policy--local)
+* [`active`](#-polkit--authorization--basic_policy--active)
+* [`condition`](#-polkit--authorization--basic_policy--condition)
+* [`log_action`](#-polkit--authorization--basic_policy--log_action)
+* [`log_subject`](#-polkit--authorization--basic_policy--log_subject)
+* [`priority`](#-polkit--authorization--basic_policy--priority)
+* [`rulesd`](#-polkit--authorization--basic_policy--rulesd)
+
+##### <a name="-polkit--authorization--basic_policy--ensure"></a>`ensure`
 
 Data type: `Enum['present','absent']`
 
@@ -242,13 +272,13 @@ Create or destroy the rules file
 
 Default value: `'present'`
 
-##### `result`
+##### <a name="-polkit--authorization--basic_policy--result"></a>`result`
 
 Data type: `Polkit::Result`
 
 The authorization result of the polkit transaction, for example `yes` or `auth_admin`
 
-##### `action_id`
+##### <a name="-polkit--authorization--basic_policy--action_id"></a>`action_id`
 
 Data type: `Optional[String]`
 
@@ -256,65 +286,65 @@ The polkit action to operate on
 
 * A list of available actions can be found by running `pkaction`
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `user`
+##### <a name="-polkit--authorization--basic_policy--user"></a>`user`
 
 Data type: `Variant[Undef,String,Array[String]]`
 
 User to check
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `group`
+##### <a name="-polkit--authorization--basic_policy--group"></a>`group`
 
 Data type: `Variant[Undef,String,Array[String]]`
 
 The group(s) that the user checking authorization belongs to
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `local`
+##### <a name="-polkit--authorization--basic_policy--local"></a>`local`
 
 Data type: `Boolean`
 
 Check if the user is a local user. See man page for more explaination
 
-Default value: ``false``
+Default value: `false`
 
-##### `active`
+##### <a name="-polkit--authorization--basic_policy--active"></a>`active`
 
 Data type: `Boolean`
 
 Check if the user is currently active. See man page for more explaination
 
-Default value: ``false``
+Default value: `false`
 
-##### `condition`
+##### <a name="-polkit--authorization--basic_policy--condition"></a>`condition`
 
 Data type: `Optional[String]`
 
 If specified, will be placed in the javascript condition to be met for polkit authorization
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `log_action`
+##### <a name="-polkit--authorization--basic_policy--log_action"></a>`log_action`
 
 Data type: `Boolean`
 
 Log the action to the system log
 
-Default value: ``true``
+Default value: `true`
 
-##### `log_subject`
+##### <a name="-polkit--authorization--basic_policy--log_subject"></a>`log_subject`
 
 Data type: `Boolean`
 
 Log the subject to the system log
 
-Default value: ``true``
+Default value: `true`
 
-##### `priority`
+##### <a name="-polkit--authorization--basic_policy--priority"></a>`priority`
 
 Data type: `Integer[0,99]`
 
@@ -322,7 +352,7 @@ Priority of the file to be created
 
 Default value: `10`
 
-##### `rulesd`
+##### <a name="-polkit--authorization--basic_policy--rulesd"></a>`rulesd`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -330,27 +360,32 @@ Location of the poklit rules directory
 
 Default value: `'/etc/polkit-1/rules.d'`
 
-### `polkit::authorization::rule`
+### <a name="polkit--authorization--rule"></a>`polkit::authorization::rule`
 
 Add a rule file containing javascript Polkit configuration to the system
 
 #### Parameters
 
-The following parameters are available in the `polkit::authorization::rule` defined type.
+The following parameters are available in the `polkit::authorization::rule` defined type:
 
-##### `ensure`
+* [`ensure`](#-polkit--authorization--rule--ensure)
+* [`content`](#-polkit--authorization--rule--content)
+* [`priority`](#-polkit--authorization--rule--priority)
+* [`rulesd`](#-polkit--authorization--rule--rulesd)
+
+##### <a name="-polkit--authorization--rule--ensure"></a>`ensure`
 
 Data type: `Enum['present','absent']`
 
 Create or destroy the rules file
 
-##### `content`
+##### <a name="-polkit--authorization--rule--content"></a>`content`
 
-Data type: `Optional[String]`
+Data type: `String`
 
 An arbitrary string of javascript polkit configuration
 
-##### `priority`
+##### <a name="-polkit--authorization--rule--priority"></a>`priority`
 
 Data type: `Integer[0,99]`
 
@@ -358,7 +393,7 @@ Priority of the file to be created, lower priority means the rule would be read 
 
 Default value: `10`
 
-##### `rulesd`
+##### <a name="-polkit--authorization--rule--rulesd"></a>`rulesd`
 
 Data type: `Stdlib::AbsolutePath`
 
@@ -366,7 +401,7 @@ Location of the poklit rules directory
 
 Default value: `'/etc/polkit-1/rules.d'`
 
-### `polkit::local_authority`
+### <a name="polkit--local_authority"></a>`polkit::local_authority`
 
 Add PolicyKit Local Authority policies to a system
 
@@ -391,15 +426,28 @@ polkit::local_authority { 'test_policy':
 
 #### Parameters
 
-The following parameters are available in the `polkit::local_authority` defined type.
+The following parameters are available in the `polkit::local_authority` defined type:
 
-##### `name`
+* [`name`](#-polkit--local_authority--name)
+* [`identity`](#-polkit--local_authority--identity)
+* [`action`](#-polkit--local_authority--action)
+* [`ensure`](#-polkit--local_authority--ensure)
+* [`target_directory`](#-polkit--local_authority--target_directory)
+* [`authority`](#-polkit--local_authority--authority)
+* [`order`](#-polkit--local_authority--order)
+* [`section_name`](#-polkit--local_authority--section_name)
+* [`result_active`](#-polkit--local_authority--result_active)
+* [`result_inactive`](#-polkit--local_authority--result_inactive)
+* [`result_any`](#-polkit--local_authority--result_any)
+* [`return_value`](#-polkit--local_authority--return_value)
+
+##### <a name="-polkit--local_authority--name"></a>`name`
 
 A descriptive, valid **filename** (not path) in which to house your pkla entries
 
 * Do not include the leading number or the trailing ``.pkla``
 
-##### `identity`
+##### <a name="-polkit--local_authority--identity"></a>`identity`
 
 Data type: `Variant[String,Array[String]]`
 
@@ -409,13 +457,13 @@ Single entries may be entered as a String. Multiple entries should
 be represented as an Array of entries and **NOT** a semicolon
 separated string.
 
-##### `action`
+##### <a name="-polkit--local_authority--action"></a>`action`
 
 Data type: `String`
 
 
 
-##### `ensure`
+##### <a name="-polkit--local_authority--ensure"></a>`ensure`
 
 Data type: `Enum['file','absent','present']`
 
@@ -424,7 +472,7 @@ This passes directly down to the file type but only cares if you set it to
 
 Default value: `'present'`
 
-##### `target_directory`
+##### <a name="-polkit--local_authority--target_directory"></a>`target_directory`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -436,7 +484,7 @@ The destination base directory for your ``pkla`` file
 
 Default value: `'/etc/polkit-1/localauthority'`
 
-##### `authority`
+##### <a name="-polkit--local_authority--authority"></a>`authority`
 
 Data type: `Polkit::Authority`
 
@@ -451,7 +499,7 @@ Supported values are:
 
 Default value: `'mandatory'`
 
-##### `order`
+##### <a name="-polkit--local_authority--order"></a>`order`
 
 Data type: `Integer`
 
@@ -461,7 +509,7 @@ The ``order`` number given to your ``pkla`` file
 
 Default value: `50`
 
-##### `section_name`
+##### <a name="-polkit--local_authority--section_name"></a>`section_name`
 
 Data type: `String`
 
@@ -469,41 +517,41 @@ The section name within the ``pkla`` file
 
 Default value: `$name`
 
-##### `result_active`
+##### <a name="-polkit--local_authority--result_active"></a>`result_active`
 
 Data type: `Polkit::Result`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `result_inactive`
-
-Data type: `Polkit::Result`
-
-
-
-Default value: ``undef``
-
-##### `result_any`
+##### <a name="-polkit--local_authority--result_inactive"></a>`result_inactive`
 
 Data type: `Polkit::Result`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### `return_value`
+##### <a name="-polkit--local_authority--result_any"></a>`result_any`
 
 Data type: `Polkit::Result`
 
 
 
-Default value: ``undef``
+Default value: `undef`
+
+##### <a name="-polkit--local_authority--return_value"></a>`return_value`
+
+Data type: `Polkit::Result`
+
+
+
+Default value: `undef`
 
 ## Functions
 
-### `polkit::validate_identity`
+### <a name="polkit--validate_identity"></a>`polkit::validate_identity`
 
 Type: Ruby 4.x API
 
@@ -541,33 +589,41 @@ can contain a wildcard.
 
 ## Data types
 
-### `Polkit::Authority`
+### <a name="Polkit--Authority"></a>`Polkit::Authority`
 
 polkit authority types
 
 Alias of `Enum['vendor', 'org', 'site', 'local', 'mandatory']`
 
-### `Polkit::PackageEnsure`
+### <a name="Polkit--PackageEnsure"></a>`Polkit::PackageEnsure`
 
 Package ensure type
 
-Alias of `Variant[String, Enum[
+Alias of
+
+```puppet
+Variant[String, Enum[
     'latest',
     'installed',
     'absent',
     'purged'
-  ]]`
+  ]]
+```
 
-### `Polkit::Result`
+### <a name="Polkit--Result"></a>`Polkit::Result`
 
 Polkit result types
 
-Alias of `Optional[Enum[
+Alias of
+
+```puppet
+Optional[Enum[
     'yes',
     'no',
     'auth_self',
     'auth_self_keep',
     'auth_admin',
     'auth_admin_keep',
-  ]]`
+  ]]
+```
 
