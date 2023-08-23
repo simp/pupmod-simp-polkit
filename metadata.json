@@ -1,6 +1,6 @@
 {
   "name": "simp-polkit",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "author": "SIMP Team",
   "summary": "Manages PolicyKit objects",
   "license": "Apache-2.0",
@@ -46,6 +46,12 @@
     },
     {
       "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
         "8"
       ]
