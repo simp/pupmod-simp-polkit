@@ -71,7 +71,7 @@ describe 'polkit::user' do
             end
 
             it do
-              expect(subject).to contain_notify('polkit::user - hidepid warning')
+              is_expected.to contain_notify('polkit::user - hidepid warning')
                 .with_loglevel('warning')
                 .with_message(%r{must be set})
             end
@@ -84,7 +84,7 @@ describe 'polkit::user' do
               end
 
               it do
-                expect(subject).to contain_notify('polkit::user - hidepid warning')
+                is_expected.to contain_notify('polkit::user - hidepid warning')
                   .with_loglevel('debug')
                   .with_message(%r{must be set})
               end
