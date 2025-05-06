@@ -1,3 +1,6 @@
+* Tue May 06 2025 Steven Pritchard <steve@sicura.us> - 6.9.0
+- Cleanup for rubocop
+
 * Mon Oct 23 2023 Steven Pritchard <steve@sicura.us> - 6.8.0
 - [puppetsync] Add EL9 support
 
