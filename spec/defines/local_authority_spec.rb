@@ -23,7 +23,8 @@ describe 'polkit::local_authority' do
         let(:expected) { File.read(File.expand_path('spec/files/any_sample.pkla')) }
 
         it {
-          is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(<<~EOF.gsub(%r{^\s+}, ''),
+          is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(
+            <<~EOF,
               [test/title]
               Identity=unix-user:foouser
               Action=com.example.domain
@@ -45,7 +46,8 @@ describe 'polkit::local_authority' do
           end
 
           it {
-            is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(<<~EOF.gsub(%r{^\s+}, ''),
+            is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(
+              <<~EOF,
                 [test_title]
                 Identity=unix-user:foouser
                 Action=com.example.domain
@@ -65,7 +67,8 @@ describe 'polkit::local_authority' do
         end
 
         it {
-          is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(<<~EOF.gsub(%r{^\s+}, ''),
+          is_expected.to create_file('/etc/polkit-1/localauthority/90-mandatory.d/test_title.pkla').with_content(
+            <<~EOF,
               [test_title]
               Identity=unix-user:foouser
               Action=com.example.domain
@@ -93,7 +96,8 @@ describe 'polkit::local_authority' do
           end
 
           it {
-            is_expected.to create_file(filename).with_content(<<~EOF.gsub(%r{^\s+}, ''),
+            is_expected.to create_file(filename).with_content(
+              <<~EOF,
                 [test_title]
                 Identity=unix-user:foouser
                 Action=com.example.domain
