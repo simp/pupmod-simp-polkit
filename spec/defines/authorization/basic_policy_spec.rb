@@ -22,7 +22,7 @@ describe 'polkit::authorization::basic_policy' do
         it {
           is_expected.to create_polkit__authorization__rule('test').with(
             ensure: 'present',
-            content: <<~EOF
+            content: <<~EOF,
               // This file is managed by Puppet
               polkit.addRule(function(action, subject) {
                 if ((action.id == 'an.action') && subject.isInGroup('developers')) {
@@ -50,7 +50,7 @@ describe 'polkit::authorization::basic_policy' do
         it {
           is_expected.to create_polkit__authorization__rule('test').with(
             ensure: 'present',
-            content: <<~EOF
+            content: <<~EOF,
               // This file is managed by Puppet
               polkit.addRule(function(action, subject) {
                 if ((action.id == 'an.action') && subject.isInGroup('developers0') && subject.isInGroup('developers1') && subject.isInGroup('developers2')) {
@@ -78,7 +78,7 @@ describe 'polkit::authorization::basic_policy' do
         it {
           is_expected.to create_polkit__authorization__rule('test').with(
             ensure: 'present',
-            content: <<-EOF
+            content: <<~EOF,
               // This file is managed by Puppet
               polkit.addRule(function(action, subject) {
                 if ((action.id == 'an.action') && subject.user == 'person') {
@@ -105,7 +105,7 @@ describe 'polkit::authorization::basic_policy' do
         it {
           is_expected.to create_polkit__authorization__rule('test').with(
             ensure: 'present',
-            content: <<-EOF
+            content: <<~EOF,
               // This file is managed by Puppet
               polkit.addRule(function(action, subject) {
                 if (some whacky javascript hack) {
@@ -134,7 +134,7 @@ describe 'polkit::authorization::basic_policy' do
         it {
           is_expected.to create_polkit__authorization__rule('test').with(
             ensure: 'present',
-            content: <<-EOF
+            content: <<~EOF,
               // This file is managed by Puppet
               polkit.addRule(function(action, subject) {
                 if (some whacky javascript hack) {
