@@ -5,15 +5,15 @@ test_name 'polkit'
 describe 'polkit' do
   hosts.each do |_host|
     let(:manifest) do
-      <<-EOF
-      user { 'test': ensure => 'present' }
+      <<~EOF
+        user { 'test': ensure => 'present' }
 
-      polkit::authorization::basic_policy { 'Allow all pkexec':
-        result      => 'yes',
-        action_id   => 'org.freedesktop.policykit.exec',
-        log_action  => true,
-        log_subject => true
-      }
+        polkit::authorization::basic_policy { 'Allow all pkexec':
+          result      => 'yes',
+          action_id   => 'org.freedesktop.policykit.exec',
+          log_action  => true,
+          log_subject => true,
+        }
       EOF
     end
 

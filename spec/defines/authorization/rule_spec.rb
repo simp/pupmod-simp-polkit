@@ -12,7 +12,7 @@ describe 'polkit::authorization::rule' do
         let(:params) do
           {
             ensure: 'present',
-         content: 'totally javascript trust me it me your friend'
+            content: 'totally javascript trust me it me your friend',
           }
         end
 
@@ -24,7 +24,7 @@ describe 'polkit::authorization::rule' do
         let(:params) do
           {
             ensure: 'present',
-         content: 'totally javascript trust me it me your friend'
+            content: 'totally javascript trust me it me your friend',
           }
         end
 
@@ -36,9 +36,9 @@ describe 'polkit::authorization::rule' do
         let(:params) do
           {
             ensure: 'present',
-         content: 'totally javascript trust me it me your friend',
-         priority: 99,
-         rulesd: '/best/path'
+            content: 'totally javascript trust me it me your friend',
+            priority: 99,
+            rulesd: '/best/path',
           }
         end
 
