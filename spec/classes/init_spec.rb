@@ -26,11 +26,11 @@ describe 'polkit' do
       {
         os: {
           'architecture' => 'x64',
-         'family' => 'windows',
-         'hardware' => 'x86_64',
-         'name' => 'windows',
-         'release' => { 'full' => '2008 R2', 'major' => '2008 R2' },
-         'windows' => { 'system32' => 'C:\\Windows\\system32' }
+          'family' => 'windows',
+          'hardware' => 'x86_64',
+          'name' => 'windows',
+          'release' => { 'full' => '2008 R2', 'major' => '2008 R2' },
+          'windows' => { 'system32' => 'C:\\Windows\\system32' },
         }
       }
     end
@@ -40,7 +40,7 @@ describe 'polkit' do
     let(:pre_condition) do
       # Mask `warning` for testing
       <<~PRE_CONDITION
-      function warning($message) { notify { 'warning_test': message => $message } }
+        function warning($message) { notify { 'warning_test': message => $message } }
       PRE_CONDITION
     end
 

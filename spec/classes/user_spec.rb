@@ -25,10 +25,10 @@ describe 'polkit::user' do
               simplib__mountpoints: {
                 '/proc' => {
                   'options_hash' => {
-                    '_gid__group' => 'proc_access'
-                  }
-                }
-              }
+                    '_gid__group' => 'proc_access',
+                  },
+                },
+              },
             },
           )
         end
@@ -42,8 +42,8 @@ describe 'polkit::user' do
             {
               user_options: {
                 'gid' => 123,
-                'groups' => ['bob']
-              }
+                'groups' => ['bob'],
+              },
             }
           end
 
@@ -62,10 +62,10 @@ describe 'polkit::user' do
                   simplib__mountpoints: {
                     '/proc' => {
                       'options_hash' => {
-                        'hidepid' => hidepid_val
-                      }
-                    }
-                  }
+                        'hidepid' => hidepid_val,
+                      },
+                    },
+                  },
                 },
               )
             end
@@ -79,7 +79,7 @@ describe 'polkit::user' do
             context 'when disabling the warning' do
               let(:params) do
                 {
-                  report_proc_issues: false
+                  report_proc_issues: false,
                 }
               end
 
@@ -99,10 +99,10 @@ describe 'polkit::user' do
                     '/proc' => {
                       'options_hash' => {
                         '_gid__group' => 'proc_access',
-                        'hidepid' => hidepid_val
-                      }
-                    }
-                  }
+                        'hidepid' => hidepid_val,
+                      },
+                    },
+                  },
                 },
               )
             end
