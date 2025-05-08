@@ -18,11 +18,10 @@ describe 'polkit with /proc hidepid=2' do
       end
 
       it 'shows a notification message but does not restart the service' do
-        output = apply_manifest_on(host, manifest, :accept_all_exit_codes => true).output
-        expect(output).to match(/hidepid warning/)
-        expect(output).not_to match(/Service/)
+        output = apply_manifest_on(host, manifest, accept_all_exit_codes: true).output
+        expect(output).to match(%r{hidepid warning})
+        expect(output).not_to match(%r{Service})
       end
-
     end
 
     context "Set hidepid and gid on /proc on #{host}" do
@@ -34,7 +33,7 @@ describe 'polkit with /proc hidepid=2' do
       it 'applies with no errors and does not show a notification message' do
         output = apply_manifest_on(host, manifest).output
 
-        expect(output).not_to match(/hidepid warning/)
+        expect(output).not_to match(%r{hidepid warning})
       end
 
       it 'is idempotent' do
@@ -43,7 +42,7 @@ describe 'polkit with /proc hidepid=2' do
 
       # See https://simp-project.atlassian.net/browse/SIMP-8228 for the issue this tests.
       it 'does not show pkttyagent warnings when running service restarts' do
-        expect(on(host, 'systemctl restart foo', :accept_all_exit_codes => true).output)
+        expect(on(host, 'systemctl restart foo', accept_all_exit_codes: true).output)
           .not_to match(%r{pkttyagent.+WARNING})
       end
     end

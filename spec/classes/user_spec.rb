@@ -22,13 +22,13 @@ describe 'polkit::user' do
         let(:facts) do
           os_facts.merge(
             {
-              :simplib__mountpoints => {
+              simplib__mountpoints: {
                 '/proc' => {
                   'options_hash' => {
-                    '_gid__group' => 'proc_access'
-                  }
-                }
-              }
+                    '_gid__group' => 'proc_access',
+                  },
+                },
+              },
             },
           )
         end
@@ -40,10 +40,10 @@ describe 'polkit::user' do
         context 'with groups passed in the options' do
           let(:params) do
             {
-              :user_options => {
+              user_options: {
                 'gid' => 123,
-                'groups' => ['bob']
-              }
+                'groups' => ['bob'],
+              },
             }
           end
 
@@ -59,19 +59,19 @@ describe 'polkit::user' do
             let(:facts) do
               os_facts.merge(
                 {
-                  :simplib__mountpoints => {
+                  simplib__mountpoints: {
                     '/proc' => {
                       'options_hash' => {
-                        'hidepid' => hidepid_val
-                      }
-                    }
-                  }
+                        'hidepid' => hidepid_val,
+                      },
+                    },
+                  },
                 },
               )
             end
 
             it do
-              expect(subject).to contain_notify('polkit::user - hidepid warning')
+              is_expected.to contain_notify('polkit::user - hidepid warning')
                 .with_loglevel('warning')
                 .with_message(%r{must be set})
             end
@@ -79,12 +79,12 @@ describe 'polkit::user' do
             context 'when disabling the warning' do
               let(:params) do
                 {
-                  :report_proc_issues => false
+                  report_proc_issues: false,
                 }
               end
 
               it do
-                expect(subject).to contain_notify('polkit::user - hidepid warning')
+                is_expected.to contain_notify('polkit::user - hidepid warning')
                   .with_loglevel('debug')
                   .with_message(%r{must be set})
               end
@@ -95,14 +95,14 @@ describe 'polkit::user' do
             let(:facts) do
               os_facts.merge(
                 {
-                  :simplib__mountpoints => {
+                  simplib__mountpoints: {
                     '/proc' => {
                       'options_hash' => {
                         '_gid__group' => 'proc_access',
-                        'hidepid' => hidepid_val
-                      }
-                    }
-                  }
+                        'hidepid' => hidepid_val,
+                      },
+                    },
+                  },
                 },
               )
             end

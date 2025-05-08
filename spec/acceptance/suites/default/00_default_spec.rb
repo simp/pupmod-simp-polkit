@@ -3,30 +3,31 @@ require 'spec_helper_acceptance'
 test_name 'polkit'
 
 describe 'polkit' do
-  hosts.each do |host|
-    let(:manifest) { <<-EOF
-      user { 'test': ensure => 'present' }
+  hosts.each do |_host|
+    let(:manifest) do
+      <<~EOF
+        user { 'test': ensure => 'present' }
 
-      polkit::authorization::basic_policy { 'Allow all pkexec':
-        result      => 'yes',
-        action_id   => 'org.freedesktop.policykit.exec',
-        log_action  => true,
-        log_subject => true
-      }
+        polkit::authorization::basic_policy { 'Allow all pkexec':
+          result      => 'yes',
+          action_id   => 'org.freedesktop.policykit.exec',
+          log_action  => true,
+          log_subject => true,
+        }
       EOF
-    }
+    end
 
     hosts.each do |host|
       context "on #{host}" do
-        it 'should apply with no errors' do
-          apply_manifest_on(host,manifest)
+        it 'applies with no errors' do
+          apply_manifest_on(host, manifest)
         end
 
-        it 'should be idempotent' do
-          apply_manifest_on(host,manifest, catch_changes: true)
+        it 'is idempotent' do
+          apply_manifest_on(host, manifest, catch_changes: true)
         end
 
-        it 'should allow anyone to run pkexec commands without authentication' do
+        it 'allows anyone to run pkexec commands without authentication' do
           on(host, 'runuser -u test pkexec ls /root')
         end
       end
