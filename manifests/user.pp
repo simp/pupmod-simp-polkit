@@ -31,7 +31,7 @@ class polkit::user (
   else {
     $_default_user_options = {}
 
-    if pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0) > 0 {
+    if Integer(pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0)) > 0 {
       if $report_proc_issues {
         $_hidepid_loglevel = 'warning'
       }
