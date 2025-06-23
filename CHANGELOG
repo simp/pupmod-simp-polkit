@@ -1,3 +1,8 @@
+* Mon Jun 23 2025 Mike Riddle <mike@sicura.us> - 7.0.0
+- Removed support for el7
+- Added support for el10
+- Removed dependancy on simplib
+
 * Tue May 06 2025 Steven Pritchard <steve@sicura.us> - 6.9.0
 - Cleanup for rubocop
 
