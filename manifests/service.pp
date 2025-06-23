@@ -15,9 +15,7 @@ class polkit::service (
   Variant[String[1],Boolean] $ensure       = 'running',
   Boolean                    $enable       = true,
   String[1]                  $service_name = 'polkit'
-){
-  simplib::assert_metadata($module_name)
-
+) {
   service { $service_name:
     ensure     => $ensure,
     enable     => $enable,
