@@ -8,11 +8,11 @@
 # @author https://github.com/simp/pupmod-simp-polkit/graphs/contributors
 #
 class polkit::user::hidepid_notify (
-  $log_level = 'warning'
-){
+  String $log_level = 'warning'
+) {
   assert_private()
 
-  if pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0) > 0 {
+  if Integer(pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0)) > 0 {
     notify { "${module_name}::user - hidepid warning":
       loglevel => $log_level,
       message  => @("HIDEPID_WARNING")

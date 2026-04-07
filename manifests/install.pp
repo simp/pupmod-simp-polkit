@@ -11,7 +11,7 @@
 class polkit::install (
   String[1]                  $package_name   = 'polkit',
   Variant[String[1],Boolean] $package_ensure = $polkit::package_ensure
-){
+) {
   assert_private()
 
   package { $package_name: ensure => $package_ensure }
