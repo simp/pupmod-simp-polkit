@@ -19,8 +19,8 @@ describe 'polkit with /proc hidepid=2' do
 
       it 'shows a notification message but does not restart the service' do
         output = apply_manifest_on(host, manifest, accept_all_exit_codes: true).output
-        expect(output).to match(%r{hidepid warning})
-        expect(output).not_to match(%r{Service})
+        expect(output).to include('hidepid warning')
+        expect(output).not_to include('Service')
       end
     end
 
@@ -33,7 +33,7 @@ describe 'polkit with /proc hidepid=2' do
       it 'applies with no errors and does not show a notification message' do
         output = apply_manifest_on(host, manifest).output
 
-        expect(output).not_to match(%r{hidepid warning})
+        expect(output).not_to include('hidepid warning')
       end
 
       it 'is idempotent' do
