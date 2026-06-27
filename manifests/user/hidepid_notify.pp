@@ -12,7 +12,17 @@ class polkit::user::hidepid_notify (
 ){
   assert_private()
 
-  if pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0) > 0 {
+  # The 'hidepid' mount option may be reported by the kernel as either an
+  # Integer (e.g. 2) or, on newer kernels, a normalized String
+  # (e.g. 'invisible', 'noaccess', 'ptraceable'). Treat anything other than
+  # the "disabled" values (0 / 'off') as enabled.
+  $_hidepid = pick($facts.dig('simplib__mountpoints', '/proc', 'options_hash', 'hidepid'), 0)
+  $_hidepid_enabled = $_hidepid ? {
+    Integer => $_hidepid > 0,
+    default => !($_hidepid in ['0', 'off']),
+  }
+
+  if $_hidepid_enabled {
     notify { "${module_name}::user - hidepid warning":
       loglevel => $log_level,
       message  => @("HIDEPID_WARNING")
