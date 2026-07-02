@@ -53,7 +53,10 @@ describe 'polkit::user' do
         end
       end
 
-      [1, 2].each do |hidepid_val|
+      # Integer values come from older kernels; String values (e.g.
+      # 'invisible') are what newer kernels report in /proc/mounts for
+      # 'hidepid=2'. See SIMP/pupmod-simp-polkit#107.
+      [1, 2, 'noaccess', 'invisible', 'ptraceable'].each do |hidepid_val|
         context "with hidepid=#{hidepid_val} set on /proc" do
           context 'with gid unset' do
             let(:facts) do
