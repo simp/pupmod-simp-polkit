@@ -34,14 +34,9 @@ when the OS is not in `metadata.json`'s support matrix
   - `$warn_on_unsupported_os` (`Boolean`, default `true`) — emit a `warning()`
     (not `fail()`) on an unsupported OS (`init.pp`, `44-46`).
 
-  Control flow (all guarded by the `os_supported` check, `init.pp`):
-  - `include polkit::install` and `include polkit::service`, with
-    `Class['polkit::install'] ~> Class['polkit::service']` (`init.pp`).
-  - If `$manage_polkit_user`: `include polkit::user`, ordered
-    `Class['polkit::install'] -> Class['polkit::user'] ~> Class['polkit::service']`
-    (`init.pp`).
-  - Else (unsupported OS + `$warn_on_unsupported_os`): emit a `warning()`
-    naming the OS and how to silence it (`init.pp`).
+  Control flow (`init.pp`):
+  - When the OS **is** supported: `include polkit::install` and `include polkit::service`, with `Class['polkit::install'] ~> Class['polkit::service']`; and if `$manage_polkit_user`, additionally `include polkit::user` ordered `Class['polkit::install'] -> Class['polkit::user'] ~> Class['polkit::service']`.
+  - When the OS is **not** supported and `$warn_on_unsupported_os`: emit a `warning()` naming the OS and how to silence it — and manage nothing else.
 
 - **`polkit::install` (`manifests/install.pp`)** — `assert_private()`'d
   (`install.pp`). Manages `package { $package_name }` (default `'polkit'`) at
@@ -85,8 +80,7 @@ when the OS is not in `metadata.json`'s support matrix
 - **`polkit::authorization::rule` (`manifests/authorization/rule.pp`)** —
   Public defined type. Low-level: writes an arbitrary `$content` string to
   `${rulesd}/${priority}-${sanitized_name}.rules` (default rulesd
-  `/etc/polkit-1/rules.d`). The name is downcased and non-alphanumerics are
-  replaced with `_` (`rule.pp`).
+  `/etc/polkit-1/rules.d`). The name is downcased and a fixed set of shell/path metacharacters (space `/ ! @ # $ % ^ & *` and `[`/`|`) is replaced with `_` via `regsubst` — other punctuation (e.g. `.`, `-`, `:`) is left as-is (`rule.pp`).
 
 - **`polkit::authorization::basic_policy`
   (`manifests/authorization/basic_policy.pp`)** — Public defined type.
