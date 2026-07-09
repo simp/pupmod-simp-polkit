@@ -10,118 +10,118 @@ optionally manages the `polkitd` service user, and provides defined types for
 adding authorization policies in both the modern JavaScript **rules.d** format
 (`polkit::authorization::rule` / `polkit::authorization::basic_policy`) and the
 legacy **Local Authority `.pkla`** format (`polkit::local_authority`)
-(`metadata.json` `summary`, `manifests/init.pp:1-3`).
+(`metadata.json` `summary`, `manifests/init.pp`).
 
 The module is **OS-gated and inert by default on unsupported systems.** The main
 class and every public defined type wrap their logic in
 `simplib::module_metadata::os_supported(load_module_metadata($module_name), {
 'release_match' => 'major' })` and do nothing (the class only optionally warns)
 when the OS is not in `metadata.json`'s support matrix
-(`manifests/init.pp:31-46`, `manifests/local_authority.pp:81`,
-`manifests/authorization/basic_policy.pp:94`, `manifests/authorization/rule.pp:22`).
+(`manifests/init.pp`, `manifests/local_authority.pp`,
+`manifests/authorization/basic_policy.pp`, `manifests/authorization/rule.pp`).
 
 ### Business logic
 
-- **`polkit` (`manifests/init.pp:26-47`)** — Public entry class (**not**
+- **`polkit` (`manifests/init.pp`)** — Public entry class (**not**
   `assert_private()`'d; consumers `include 'polkit'`). Parameters
-  (`init.pp:27-29`):
+  (`init.pp`):
   - `$manage_polkit_user` (`Boolean`, default `true`) — whether to manage the
     `polkitd` user. Enabled by default because newer polkit versions require the
-    user to be in the group assigned to `/proc` to function (`init.pp:7-13`).
+    user to be in the group assigned to `/proc` to function (`init.pp`).
   - `$package_ensure` (`Polkit::PackageEnsure`) — defaults to
     `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })`
-    (`init.pp:28`).
+    (`init.pp`).
   - `$warn_on_unsupported_os` (`Boolean`, default `true`) — emit a `warning()`
-    (not `fail()`) on an unsupported OS (`init.pp:18-22`, `44-46`).
+    (not `fail()`) on an unsupported OS (`init.pp`, `44-46`).
 
-  Control flow (all guarded by the `os_supported` check, `init.pp:31`):
+  Control flow (all guarded by the `os_supported` check, `init.pp`):
   - `include polkit::install` and `include polkit::service`, with
-    `Class['polkit::install'] ~> Class['polkit::service']` (`init.pp:32-35`).
+    `Class['polkit::install'] ~> Class['polkit::service']` (`init.pp`).
   - If `$manage_polkit_user`: `include polkit::user`, ordered
     `Class['polkit::install'] -> Class['polkit::user'] ~> Class['polkit::service']`
-    (`init.pp:37-42`).
+    (`init.pp`).
   - Else (unsupported OS + `$warn_on_unsupported_os`): emit a `warning()`
-    naming the OS and how to silence it (`init.pp:44-46`).
+    naming the OS and how to silence it (`init.pp`).
 
-- **`polkit::install` (`manifests/install.pp:11-18`)** — `assert_private()`'d
-  (`install.pp:15`). Manages `package { $package_name }` (default `'polkit'`) at
-  `$package_ensure` (defaults to `$polkit::package_ensure`, `install.pp:12-17`).
+- **`polkit::install` (`manifests/install.pp`)** — `assert_private()`'d
+  (`install.pp`). Manages `package { $package_name }` (default `'polkit'`) at
+  `$package_ensure` (defaults to `$polkit::package_ensure`, `install.pp`).
 
-- **`polkit::service` (`manifests/service.pp:14-27`)** — Public (**not**
+- **`polkit::service` (`manifests/service.pp`)** — Public (**not**
   `assert_private()`'d; it instead calls `simplib::assert_metadata($module_name)`
-  at `service.pp:19`). Manages `service { $service_name }` (default `'polkit'`)
+  at `service.pp`). Manages `service { $service_name }` (default `'polkit'`)
   `ensure => running`, `enable => true`, `hasrestart`/`hasstatus => true`
-  (`service.pp:15-26`).
+  (`service.pp`).
 
-- **`polkit::user` (`manifests/user.pp:17-53`)** — `assert_private()`'d
-  (`user.pp:22`). Manages the `polkitd` user. Reads the `/proc` mount's group
+- **`polkit::user` (`manifests/user.pp`)** — `assert_private()`'d
+  (`user.pp`). Manages the `polkitd` user. Reads the `/proc` mount's group
   from the `simplib__mountpoints` fact
   (`$facts.dig('simplib__mountpoints', '/proc', 'options_hash', '_gid__group')`,
-  `user.pp:24`):
+  `user.pp`):
   - If the `/proc` group is set, it is prepended to the user's `groups`
-    (`user.pp:26-30`).
+    (`user.pp`).
   - Else, if `/proc` is mounted with `hidepid > 0`, it declares
     `polkit::user::hidepid_notify` at `warning` or `debug` level depending on
-    `$report_proc_issues` (`user.pp:31-44`).
+    `$report_proc_issues` (`user.pp`).
   - Declares `user { $user: * => $_user_options }` via the splat operator
-    (`user.pp:53`).
+    (`user.pp`).
 
-- **`polkit::user::hidepid_notify` (`manifests/user/hidepid_notify.pp:10-24`)** —
-  `assert_private()`'d (`hidepid_notify.pp:13`). Split into its own class purely
-  for notification-chaining correctness (`hidepid_notify.pp:3`). Emits a `notify`
+- **`polkit::user::hidepid_notify` (`manifests/user/hidepid_notify.pp`)** —
+  `assert_private()`'d (`hidepid_notify.pp`). Split into its own class purely
+  for notification-chaining correctness (`hidepid_notify.pp`). Emits a `notify`
   at `$log_level` warning that `/proc` needs a `gid` option when `hidepid > 0`
-  (`hidepid_notify.pp:15-23`).
+  (`hidepid_notify.pp`).
 
-- **`polkit::local_authority` (`manifests/local_authority.pp:66-116`)** — Public
+- **`polkit::local_authority` (`manifests/local_authority.pp`)** — Public
   defined type. Writes a legacy `.pkla` file. Requires at least one of
   `$result_active` / `$result_inactive` / `$result_any`, else `fail()`
-  (`local_authority.pp:89-91`). Maps the `$authority` enum to a numbered
+  (`local_authority.pp`). Maps the `$authority` enum to a numbered
   directory (`vendor`→`10-vendor.d` … `mandatory`→`90-mandatory.d`,
-  `local_authority.pp:93-99`), validates `$identity` via
-  `polkit::validate_identity()` (`local_authority.pp:84`), and manages a
+  `local_authority.pp`), validates `$identity` via
+  `polkit::validate_identity()` (`local_authority.pp`), and manages a
   `file` rendered from `templates/local_authority.erb`, `require => Package['polkit']`
-  (`local_authority.pp:108-115`).
+  (`local_authority.pp`).
 
-- **`polkit::authorization::rule` (`manifests/authorization/rule.pp:15-34`)** —
+- **`polkit::authorization::rule` (`manifests/authorization/rule.pp`)** —
   Public defined type. Low-level: writes an arbitrary `$content` string to
   `${rulesd}/${priority}-${sanitized_name}.rules` (default rulesd
   `/etc/polkit-1/rules.d`). The name is downcased and non-alphanumerics are
-  replaced with `_` (`rule.pp:25-33`).
+  replaced with `_` (`rule.pp`).
 
 - **`polkit::authorization::basic_policy`
-  (`manifests/authorization/basic_policy.pp:79-109`)** — Public defined type.
+  (`manifests/authorization/basic_policy.pp`)** — Public defined type.
   A convenience wrapper that renders `templates/basic_policy.erb` (which builds
   the JavaScript condition from `$action_id` / `$user` / `$group` / `$local` /
   `$active`, or uses a supplied `$condition`) and hands the result to
-  `polkit::authorization::rule` (`basic_policy.pp:103-108`). If no `$condition`
-  is given, `$action_id` is required, else `fail()` (`basic_policy.pp:97-101`).
+  `polkit::authorization::rule` (`basic_policy.pp`). If no `$condition`
+  is given, `$action_id` is required, else `fail()` (`basic_policy.pp`).
 
 ### Gotchas / non-obvious details
 
 - **The module is inert, not failing, on unsupported OSes.** The main class and
   all three public defined types wrap their logic in the `os_supported` check
-  and simply do nothing on an unsupported OS (`init.pp:31,44`,
-  `local_authority.pp:81`, `basic_policy.pp:94`, `rule.pp:22`). The comment
+  and simply do nothing on an unsupported OS (`init.pp`,
+  `local_authority.pp`, `basic_policy.pp`, `rule.pp`). The comment
   "this defined type is inert if called from an unsupported OS" appears verbatim
   in each define. This is deliberate backwards compatibility.
 - **`polkit::service` is public but is the class that asserts metadata.** It is
-  the one class calling `simplib::assert_metadata($module_name)` (`service.pp:19`),
+  the one class calling `simplib::assert_metadata($module_name)` (`service.pp`),
   not the entry class. `polkit::install`, `polkit::user`, and
   `polkit::user::hidepid_notify` are the only `assert_private()`'d classes.
 - **`$manage_polkit_user` defaults to `true` for a reason.** Newer polkit needs
   `polkitd` in the `/proc` group; the module wires the group in from the
-  `simplib__mountpoints` fact (`init.pp:7-13`, `user.pp:24-30`).
+  `simplib__mountpoints` fact (`init.pp`, `user.pp`).
 - **The hidepid warning only fires under specific conditions** — `/proc` mounted
-  with `hidepid > 0` **and** no `_gid__group` set (`user.pp:31-44`,
-  `hidepid_notify.pp:15`). The check is duplicated in both `polkit::user` and
+  with `hidepid > 0` **and** no `_gid__group` set (`user.pp`,
+  `hidepid_notify.pp`). The check is duplicated in both `polkit::user` and
   `polkit::user::hidepid_notify`.
 - **`polkit::validate_identity` accepts `unix-netgroup` but the type/docstrings
   advertise fewer.** The Ruby function's valid headers are `unix-user`,
   `unix-group`, `unix-netgroup`, plus the literal `default`; netgroups may not
-  contain a glob (`lib/puppet/functions/polkit/validate_identity.rb:29-51`). The
-  local_authority docstring only mentions user/group (`local_authority.pp:22-26`).
+  contain a glob (`lib/puppet/functions/polkit/validate_identity.rb`). The
+  local_authority docstring only mentions user/group (`local_authority.pp`).
 - **The `basic_policy` docstring references a `polkit::condition` function that
-  does not exist.** `basic_policy.pp:19` says the define "can use the
+  does not exist.** `basic_policy.pp` says the define "can use the
   polkit::condition function to generate a condition", but no such function is
   present in `lib/` — the condition is actually built inline inside
   `templates/basic_policy.erb`. Treat the docstring as stale.
@@ -138,13 +138,13 @@ when the OS is not in `metadata.json`'s support matrix
 
 This is the module's SIMP configuration seam. There is exactly one such call:
 
-| Line | Key | `default_value` |
+| File | Key | `default_value` |
 |------|-----|-----------------|
-| `init.pp:28` | `simp_options::package_ensure` | `'installed'` |
+| `init.pp` | `simp_options::package_ensure` | `'installed'` |
 
 `polkit::install::package_ensure` and `polkit::service::ensure` do **not** call
-the seam directly — `install` inherits `$polkit::package_ensure` (`install.pp:13`),
-and `service::ensure` hard-defaults to `'running'` (`service.pp:15`). Keep
+the seam directly — `install` inherits `$polkit::package_ensure` (`install.pp`),
+and `service::ensure` hard-defaults to `'running'` (`service.pp`). Keep
 routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 'default_value' => ... })` with an explicit default rather than assuming
 `simp_options` is included.
@@ -204,13 +204,13 @@ Supported OS matrix (from `metadata.json` `operatingsystem_support`): CentOS
 - **No `data/` or `hiera.yaml`** — this module ships no module data; parameter
   defaults live in the manifests and in `metadata.json`.
 - **Acceptance runs in CI:** `.github/workflows/pr_tests.yml` has an
-  `acceptance` job (`pr_tests.yml:116-154`) alongside `puppet-syntax`,
+  `acceptance` job (`pr_tests.yml`) alongside `puppet-syntax`,
   `puppet-style`, `ruby-style`, `file-checks`, `releng-checks`, and
   `spec-tests` (matrix over Puppet/Ruby versions). Its matrix nodes are
   `docker_alma8/9/10`, `docker_centos9/10`, `docker_oel8/9/10`,
   `docker_rhel8/9`, and `docker_rocky8/9/10`. It starts `podman.socket`,
   exports `DOCKER_HOST`, and runs `bundle exec rake beaker:suites[default,<node>]`
-  with `BEAKER_HYPERVISOR=docker` (`pr_tests.yml:152`).
+  with `BEAKER_HYPERVISOR=docker` (`pr_tests.yml`).
 
 ## Common commands
 
@@ -242,7 +242,7 @@ Relevant gem pins (from `Gemfile`): `puppetlabs_spec_helper ~> 8.0.0`,
 `simp-beaker-helpers ~> 2.0.0`. Rubocop is pinned to `~> 1.88.0`. The test group
 installs both `openvox` and `puppet` gems, defaulting to the `>= 8 < 9` range.
 `spec/spec_helper.rb` requires `puppetlabs_spec_helper/module_spec_helper` and
-`simp/rspec-puppet-facts` (`spec/spec_helper.rb:11,13`).
+`simp/rspec-puppet-facts` (`spec/spec_helper.rb`).
 
 ## Conventions
 
