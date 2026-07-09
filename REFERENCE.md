@@ -192,7 +192,7 @@ The following parameters are available in the `polkit::user::hidepid_notify` cla
 
 ##### <a name="-polkit--user--hidepid_notify--log_level"></a>`log_level`
 
-Data type: `Any`
+Data type: `Simplib::PuppetLogLevel`
 
 The log level to use when generating the notification message
 
@@ -290,7 +290,7 @@ Default value: `undef`
 
 ##### <a name="-polkit--authorization--basic_policy--user"></a>`user`
 
-Data type: `Variant[Undef,String,Array[String]]`
+Data type: `Optional[Variant[String,Array[String]]]`
 
 User to check
 
@@ -298,7 +298,7 @@ Default value: `undef`
 
 ##### <a name="-polkit--authorization--basic_policy--group"></a>`group`
 
-Data type: `Variant[Undef,String,Array[String]]`
+Data type: `Optional[Variant[String,Array[String]]]`
 
 The group(s) that the user checking authorization belongs to
 
@@ -354,7 +354,7 @@ Default value: `10`
 
 ##### <a name="-polkit--authorization--basic_policy--rulesd"></a>`rulesd`
 
-Data type: `Stdlib::AbsolutePath`
+Data type: `Stdlib::Absolutepath`
 
 Location of the poklit rules directory
 
@@ -395,7 +395,7 @@ Default value: `10`
 
 ##### <a name="-polkit--authorization--rule--rulesd"></a>`rulesd`
 
-Data type: `Stdlib::AbsolutePath`
+Data type: `Stdlib::Absolutepath`
 
 Location of the poklit rules directory
 

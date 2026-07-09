@@ -18,7 +18,7 @@ class polkit::user (
   String[1] $user               = 'polkitd',
   Hash      $user_options       = {},
   Boolean   $report_proc_issues = true
-){
+) {
   assert_private()
 
   $_proc_mount_group = $facts.dig('simplib__mountpoints', '/proc', 'options_hash', '_gid__group')

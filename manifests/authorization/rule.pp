@@ -16,7 +16,7 @@ define polkit::authorization::rule (
   Enum['present','absent'] $ensure,
   String                   $content,
   Integer[0,99]            $priority = 10,
-  Stdlib::AbsolutePath     $rulesd   = '/etc/polkit-1/rules.d'
+  Stdlib::Absolutepath     $rulesd   = '/etc/polkit-1/rules.d'
 ) {
   # For backwards compatibility purposes, this defined type is inert if called from an unsupported OS
   if simplib::module_metadata::os_supported( load_module_metadata($module_name), { 'release_match' => 'major' }) {

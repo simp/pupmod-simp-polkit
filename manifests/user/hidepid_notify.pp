@@ -8,8 +8,8 @@
 # @author https://github.com/simp/pupmod-simp-polkit/graphs/contributors
 #
 class polkit::user::hidepid_notify (
-  $log_level = 'warning'
-){
+  Simplib::PuppetLogLevel $log_level = 'warning'
+) {
   assert_private()
 
   # The 'hidepid' mount option may be reported by the kernel as either an

@@ -77,18 +77,18 @@
 # @param rulesd Location of the poklit rules directory
 #
 define polkit::authorization::basic_policy (
-  Polkit::Result                      $result,
-  Enum['present','absent']            $ensure      = 'present',
-  Optional[String]                    $action_id   = undef,
-  Variant[Undef,String,Array[String]] $user        = undef,
-  Variant[Undef,String,Array[String]] $group       = undef,
-  Boolean                             $local       = false,
-  Boolean                             $active      = false,
-  Optional[String]                    $condition   = undef,
-  Boolean                             $log_action  = true,
-  Boolean                             $log_subject = true,
-  Integer[0,99]                       $priority    = 10,
-  Stdlib::AbsolutePath                $rulesd      = '/etc/polkit-1/rules.d',
+  Polkit::Result                           $result,
+  Enum['present','absent']                 $ensure      = 'present',
+  Optional[String]                         $action_id   = undef,
+  Optional[Variant[String,Array[String]]]  $user        = undef,
+  Optional[Variant[String,Array[String]]]  $group       = undef,
+  Boolean                                  $local       = false,
+  Boolean                                  $active      = false,
+  Optional[String]                         $condition   = undef,
+  Boolean                                  $log_action  = true,
+  Boolean                                  $log_subject = true,
+  Integer[0,99]                            $priority    = 10,
+  Stdlib::Absolutepath                     $rulesd      = '/etc/polkit-1/rules.d',
 ) {
   # For backwards compatibility purposes, this defined type is inert if called from an unsupported OS
   if simplib::module_metadata::os_supported( load_module_metadata($module_name), { 'release_match' => 'major' }) {
