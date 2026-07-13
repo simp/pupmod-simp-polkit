@@ -27,7 +27,7 @@ class polkit (
   Boolean               $manage_polkit_user     = true,
   Polkit::PackageEnsure $package_ensure         = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
   Boolean               $warn_on_unsupported_os = true
-){
+) {
   if simplib::module_metadata::os_supported( load_module_metadata($module_name), { 'release_match' => 'major' }) {
     include polkit::install
     include polkit::service
