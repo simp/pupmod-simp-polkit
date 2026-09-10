@@ -54,7 +54,7 @@ class polkit::user (
   }
 
   if $user_options {
-    $_user_options = $user_options.merge($_default_user_options)
+    $_user_options = $user_options.stdlib::merge($_default_user_options)
   }
   else {
     $_user_options = $_default_user_options
