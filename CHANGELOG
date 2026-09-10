@@ -1,5 +1,8 @@
 * Thu Sep 10 2026 Chris Tessmer <chris.tessmer@onyxpoint.com> - 7.0.3
 - Use `stdlib::merge` instead of deprecated (stdlib) `merge`
+- Require `puppetlabs-stdlib` >= 9.0.0, which introduced `stdlib::merge`
+  - This cannot affect any working setup: the module already requires OpenVox 8,
+    and stdlib 8.x only supports Puppet < 8
 
 * Mon Aug 24 2026 Steven Pritchard <steve@sicura.us> - 7.0.2
 - [puppetsync] Update metadata.json dependency ranges from the Forge
