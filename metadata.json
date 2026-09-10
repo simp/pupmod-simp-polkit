@@ -1,6 +1,6 @@
 {
   "name": "simp-polkit",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "author": "SIMP Team",
   "summary": "Manages PolicyKit objects",
   "license": "Apache-2.0",
@@ -15,7 +15,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 8.0.0 < 11.0.0"
+      "version_requirement": ">= 9.0.0 < 11.0.0"
     },
     {
       "name": "simp/simplib",
