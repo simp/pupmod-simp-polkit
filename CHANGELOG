@@ -1,3 +1,7 @@
+* Thu Oct 08 2026 Steven Pritchard <steve@sicura.us> - 7.1.0
+- Add support for OpenVox 9
+- Update metadata.json dependency ranges from the Forge
+
 * Thu Sep 10 2026 Chris Tessmer <chris.tessmer@onyxpoint.com> - 7.0.3
 - Use `stdlib::merge` instead of deprecated (stdlib) `merge`
 - Require `puppetlabs-stdlib` >= 9.0.0, which introduced `stdlib::merge`
