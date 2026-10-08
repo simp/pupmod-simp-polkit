@@ -20,7 +20,7 @@
 
 ### Functions
 
-* [`polkit::validate_identity`](#polkit--validate_identity): Validate that all entries are valid PolicyKit identities per pkla-check-authorization(8).  Abort catalog compilation if any entry fails this 
+* [`polkit::validate_identity`](#polkit--validate_identity): Validate that all entries are valid PolicyKit identities per pkla-check-authorization(8).  Abort catalog compilation if any entry fails this
 
 ### Data types
 
@@ -626,4 +626,3 @@ Optional[Enum[
     'auth_admin_keep',
   ]]
 ```
-
